@@ -1,4 +1,4 @@
-from scanner.Scanner import Scanner
+from lexer.Lexer import Scanner
 
 
 def main():
