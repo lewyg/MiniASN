@@ -20,7 +20,8 @@ class Lexer:
                         required_space=False),
         TokenDescriptor(token_type=TokenType.ASSIGN,
                         required_space=False),
-        TokenDescriptor(token_type=TokenType.PARAMETRIZE),
+        TokenDescriptor(token_type=TokenType.PARAMETRIZE,
+                        required_space=False),
 
         TokenDescriptor(token_type=TokenType.LEFT_BRACKET,
                         required_space=False),
