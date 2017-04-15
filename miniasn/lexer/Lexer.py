@@ -1,5 +1,6 @@
-from tokens.Token import Token
-from tokens.Tokenizer import Tokenizer
+from miniasn.token.Tokenizer import Tokenizer
+
+from miniasn.token.Token import Token
 
 
 class Lexer:
@@ -36,14 +37,14 @@ class Lexer:
             next_char = self.__file_reader.next_byte()
             possible_descriptors = self.__update_possible_descriptors(descriptors, next_char, len(word))
 
-        descriptors = self.__get_accepted_descriptors(descriptors, word)
+        descriptors = self.__accepted_descriptors(descriptors, word)
 
         if not descriptors:
             raise Exception('Unexpected symbol! {}'.format(next_char))
 
         token_descriptor = descriptors[0]
 
-        self.__check_space(token_descriptor, next_char)
+        self.__check_if_space_is_reqiured(token_descriptor, next_char)
 
         return Token(token_descriptor.token_type, word, 0, 0)
 
@@ -53,16 +54,16 @@ class Lexer:
                                               char_position,
                                               token_descriptor.token_type.value)]
 
-    def __get_accepted_descriptors(self, descriptors, word):
+    def __accepted_descriptors(self, descriptors, word):
         return [token_descriptor for token_descriptor in descriptors
                 if token_descriptor.acceptor(word,
                                              token_descriptor.token_type.value)]
 
-    def __check_space(self, descriptor, next_char):
+    def __check_if_space_is_reqiured(self, token_descriptor, next_char):
         if next_char.isspace():
             return
 
-        if descriptor.required_space and \
-                [token_descriptor for token_descriptor in self.__tokenizer.tokens_required_space
-                 if token_descriptor.token_type.value[0] == next_char]:
-            raise Exception("Space is required for {}".format(descriptor.token_type.name))
+        if token_descriptor.required_space and \
+                [token_required_space for token_required_space in self.__tokenizer.tokens_required_space
+                 if token_required_space.token_type.value[0] == next_char]:
+            raise Exception("Space is required for {}".format(token_descriptor.token_type.name))

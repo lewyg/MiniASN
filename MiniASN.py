@@ -1,5 +1,5 @@
-from lexer.Lexer import Lexer
-from reader.FileReader import FileReader
+from miniasn.lexer.Lexer import Lexer
+from miniasn.reader.FileReader import FileReader
 
 
 def main():
