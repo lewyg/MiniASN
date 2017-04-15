@@ -1,12 +1,14 @@
-from lexer.Lexer import Scanner
+from lexer.Lexer import Lexer
+from reader.FileReader import FileReader
 
 
 def main():
-    scanner = Scanner('example.miniasn')
-    t = scanner.get_token()
+    file_reader = FileReader('example.miniasn')
+    lexer = Lexer(file_reader)
+    t = lexer.get_token()
     while t:
         print(t)
-        t = scanner.get_token()
+        t = lexer.get_token()
 
 
 if __name__ == "__main__":
