@@ -6,7 +6,7 @@ class LexerException(Exception):
         self.__reason = reason
 
     def __str__(self):
-        return 'Found lexer exceptions at line {}, column {}: \n\t{}'.format(self.__line, self.__column, self.__reason)
+        return 'Lexer exception occurred at line {}, column {}: \n\t{}'.format(self.__line, self.__column, self.__reason)
 
 
 class RequiredSpaceException(LexerException):
