@@ -21,31 +21,48 @@ class Lexer:
             next_char = self.__file_reader.next_byte()
 
     def __read_token(self):
-        token_list = self.__tokenizer.descriptors
-
+        word = ''
+        descriptors = self.__tokenizer.descriptors
         next_char = self.__file_reader.next_byte()
+
         if not next_char:
             return None
 
-        word = ''
-        possible_tokens = [token for token in token_list
-                           if token.qualifier(next_char, len(word), token.token_type.value)]
+        possible_descriptors = self.__update_possible_descriptors(descriptors, next_char, len(word))
 
-        while possible_tokens:
-            token_list = possible_tokens
+        while possible_descriptors:
+            descriptors = possible_descriptors
             word += self.__file_reader.read_byte()
             next_char = self.__file_reader.next_byte()
-            possible_tokens = [token for token in token_list
-                               if token.qualifier(next_char, len(word), token.token_type.value)]
+            possible_descriptors = self.__update_possible_descriptors(descriptors, next_char, len(word))
 
-        token_list = [token for token in token_list if token.acceptor(word, token.token_type.value)]
+        descriptors = self.__get_accepted_descriptors(descriptors, word)
 
-        if not token_list:
-            raise Exception("zly znak")
+        if not descriptors:
+            raise Exception('Unexpected symbol! {}'.format(next_char))
 
-        tokena = token_list[0]
+        token_descriptor = descriptors[0]
 
-        if not next_char.isspace() and tokena.required_space and tokena not in self.__tokenizer.tokens_required_space:
-            raise Exception("spacja")
+        self.__check_space(token_descriptor, next_char)
 
-        return Token(tokena.token_type, word, 0, 0)
+        return Token(token_descriptor.token_type, word, 0, 0)
+
+    def __update_possible_descriptors(self, descriptors, next_char, char_position):
+        return [token_descriptor for token_descriptor in descriptors
+                if token_descriptor.qualifier(next_char,
+                                              char_position,
+                                              token_descriptor.token_type.value)]
+
+    def __get_accepted_descriptors(self, descriptors, word):
+        return [token_descriptor for token_descriptor in descriptors
+                if token_descriptor.acceptor(word,
+                                             token_descriptor.token_type.value)]
+
+    def __check_space(self, descriptor, next_char):
+        if next_char.isspace():
+            return
+
+        if descriptor.required_space and \
+                [token_descriptor for token_descriptor in self.__tokenizer.tokens_required_space
+                 if token_descriptor.token_type.value[0] == next_char]:
+            raise Exception("Space is required for {}".format(descriptor.token_type.name))

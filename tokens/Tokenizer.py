@@ -59,8 +59,8 @@ class Tokenizer:
     ]
 
     def __init__(self):
-        self.__tokens_required_space = [token_desc for token_desc in self.__token_descriptors
-                                        if token_desc.required_space]
+        self.__tokens_required_space = [token_descriptor for token_descriptor in self.__token_descriptors
+                                        if token_descriptor.required_space]
 
     @property
     def descriptors(self):
