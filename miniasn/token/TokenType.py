@@ -32,5 +32,5 @@ class TokenType(Enum):
     TRUE = 'TRUE'
     FALSE = 'FALSE'
 
-    NUMBER_LITERAL = 'NUMBER'
-    IDENTIFIER = 'IDENTIFIER'
+    NUMBER_LITERAL = '123'
+    IDENTIFIER = 'ID'

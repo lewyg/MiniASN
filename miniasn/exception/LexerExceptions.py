@@ -15,7 +15,7 @@ class RequiredSpaceException(LexerException):
         super(RequiredSpaceException, self).__init__(line, column, reason)
 
 
-class UnexpectedSymbolException(LexerException):
+class UndefinedSymbolException(LexerException):
     def __init__(self, line, column, char):
-        reason = 'Unexpected symbol {}'.format(char)
-        super(UnexpectedSymbolException, self).__init__(line, column, reason)
+        reason = 'Undefined symbol {}'.format(char)
+        super(UndefinedSymbolException, self).__init__(line, column, reason)

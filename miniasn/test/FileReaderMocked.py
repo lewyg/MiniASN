@@ -1,20 +1,13 @@
 BITS_IN_BYTE = 8
-UTF_8 = 'utf-8'
 
 
-class FileReader:
-    def __init__(self, filename):
-        self.__file = self.__open_file(filename)
+class FileReaderMocked:
+    def __init__(self, file):
+        self.__file = file
         self.__last_byte = []
         self.__bits_counter = 0
         self.__current_line = 1
         self.__current_column = 1
-
-    def __del__(self):
-        try:
-            self.__file.close()
-        except AttributeError:
-            pass
 
     @property
     def current_line(self):
@@ -24,15 +17,15 @@ class FileReader:
     def current_column(self):
         return self.__current_column
 
-    def __open_file(self, filename):
-        return open(filename, 'rb')
-
     def read_char(self):
-        byte = self.__file.read(1)
-        char = self.__byte_to_char(byte)
-        self.__update_current_position(char)
+        if not self.__file:
+            return ''
 
-        return char
+        byte = self.__file[0]
+        self.__file = self.__file[1:]
+        self.__update_current_position(byte)
+
+        return byte
 
     def __update_current_position(self, char):
         self.__current_column += 1
@@ -42,18 +35,11 @@ class FileReader:
             self.__current_column = 1
 
     def preview_next_char(self):
-        position = self.__file.tell()
-        byte = self.__file.read(1)
-        self.__file.seek(position)
-
-        return self.__byte_to_char(byte)
-
-    def __byte_to_char(self, byte):
-        return str(byte, UTF_8)
+        return self.__file[0] if self.__file else ''
 
     def read_bit(self):
         if not self.__last_byte or self.__bits_counter == BITS_IN_BYTE:
-            byte = self.__file.read(1)
+            byte = self.read_char()
             if not byte:
                 return None
             self.__last_byte = self.__get_bits_from_byte(byte)

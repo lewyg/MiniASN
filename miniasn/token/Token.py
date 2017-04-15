@@ -22,4 +22,4 @@ class Token:
         return self.__column
 
     def __repr__(self):
-        return "{:24} -\t {}".format(self.token_type.name, self.token_value)
+        return '{:24} -\t {}'.format(self.token_type.name, self.token_value)

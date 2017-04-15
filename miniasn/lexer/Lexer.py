@@ -1,7 +1,7 @@
 from miniasn.lexer.TokenDescriptor import TokenDescriptor
 from miniasn.token.Token import Token
 from miniasn.token.TokenType import TokenType
-from miniasn.exception.LexerExceptions import UnexpectedSymbolException, RequiredSpaceException, LexerException
+from miniasn.exception.LexerExceptions import UndefinedSymbolException, RequiredSpaceException
 
 
 class Lexer:
@@ -62,8 +62,6 @@ class Lexer:
 
     def __init__(self, file_reader):
         self.__file_reader = file_reader
-        self.__token_types_required_space = [token_descriptor.token_type for token_descriptor in self.__descriptors
-                                             if token_descriptor.required_space]
 
     def get_token(self):
         self.__ignore_whitespaces()
@@ -71,16 +69,17 @@ class Lexer:
         return self.__read_token()
 
     def __ignore_whitespaces(self):
-        next_char = self.__file_reader.next_byte()
+        next_char = self.__file_reader.preview_next_char()
 
         while next_char and next_char.isspace():
-            self.__file_reader.read_byte()
-            next_char = self.__file_reader.next_byte()
+            self.__file_reader.read_char()
+            next_char = self.__file_reader.preview_next_char()
 
     def __read_token(self):
         word = ''
+        line, column = self.__file_reader.current_line, self.__file_reader.current_column
         descriptors = self.__descriptors
-        next_char = self.__file_reader.next_byte()
+        next_char = self.__file_reader.preview_next_char()
 
         if not next_char:
             return None
@@ -89,38 +88,33 @@ class Lexer:
 
         while possible_descriptors:
             descriptors = possible_descriptors
-            word += self.__file_reader.read_byte()
-            next_char = self.__file_reader.next_byte()
+            word += self.__file_reader.read_char()
+            next_char = self.__file_reader.preview_next_char()
             possible_descriptors = self.__update_possible_descriptors(descriptors, next_char, len(word))
 
         descriptors = self.__accepted_descriptors(descriptors, word)
 
         if not descriptors:
-            raise UnexpectedSymbolException(self.__file_reader.current_line, self.__file_reader.current_column,
-                                            next_char)
+            raise UndefinedSymbolException(line, column, word + next_char)
 
         token_descriptor = descriptors[0]
 
         self.__check_if_space_is_reqiured(token_descriptor, word, next_char)
 
-        return Token(token_descriptor.token_type, word, 0, 0)
+        return Token(token_descriptor.token_type, word, line, column)
 
     def __update_possible_descriptors(self, descriptors, next_char, char_position):
         return [token_descriptor for token_descriptor in descriptors
-                if token_descriptor.qualifier(next_char,
-                                              char_position,
-                                              token_descriptor.token_value)]
+                if token_descriptor.qualifier(next_char, char_position, token_descriptor.token_value)]
 
     def __accepted_descriptors(self, descriptors, word):
         return [token_descriptor for token_descriptor in descriptors
-                if token_descriptor.acceptor(word,
-                                             token_descriptor.token_value)]
+                if token_descriptor.acceptor(word, token_descriptor.token_value)]
 
     def __check_if_space_is_reqiured(self, token_descriptor, word, next_char):
         if next_char.isspace():
             return
 
-        if token_descriptor.required_space and [token_type for token_type in self.__token_types_required_space
-                                                if token_type.value[0] == next_char]:
+        if token_descriptor.required_space and next_char.isalnum():
             raise RequiredSpaceException(self.__file_reader.current_line, self.__file_reader.current_column,
-                                         '{}({})'.format(word, token_descriptor.token_value))
+                                         '{}({})'.format(word, token_descriptor.token_name))
