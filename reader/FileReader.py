@@ -20,6 +20,13 @@ class FileReader:
 
         return byte
 
+    def next_byte(self):
+        position = self.__file.tell()
+        byte = self.__file.read(1)
+        self.__file.seek(position)
+
+        return byte
+
     def read_bit(self):
         if not self.__last_byte or self.__bits_counter == BITS_IN_BYTE:
             self.__last_byte = self.__get_bits_from_byte(self.read_byte())
@@ -27,8 +34,10 @@ class FileReader:
 
         bit = self.__last_byte[self.__bits_counter]
         self.__bits_counter += 1
+
         return bit
 
     def __get_bits_from_byte(self, byte):
         byte = ord(byte)
+
         return [(byte >> i) & 1 for i in range(BITS_IN_BYTE)][::-1]
