@@ -1,6 +1,6 @@
-MojaSekwencjaChoice ::= SEQUENCE {
+MojaSekwencjaChoice::= SEQUENCE {
 a UINT_8
-b ::= CHOICE[a]
+b::=CHOICE[a]
 {
 c UINT[a>0 AND a < 100]
 d BOOL[a == 0]
