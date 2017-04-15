@@ -1,5 +1,5 @@
-# coding=utf-8
 BITS_IN_BYTE = 8
+UTF_8 = 'utf-8'
 
 
 class FileReader:
@@ -11,7 +11,10 @@ class FileReader:
         self.__current_column = 1
 
     def __del__(self):
-        self.__file.close()
+        try:
+            self.__file.close()
+        except AttributeError:
+            pass
 
     @property
     def current_line(self):
@@ -24,11 +27,12 @@ class FileReader:
     def __open_file(self, filename):
         return open(filename, 'rb')
 
-    def read_byte(self):
+    def read_char(self):
         byte = self.__file.read(1)
-        self.__update_current_position(byte)
+        char = self.__byte_to_char(byte)
+        self.__update_current_position(char)
 
-        return byte
+        return char
 
     def __update_current_position(self, char):
         self.__current_column += 1
@@ -37,16 +41,22 @@ class FileReader:
             self.__current_line += 1
             self.__current_column = 1
 
-    def next_byte(self):
+    def preview_next_char(self):
         position = self.__file.tell()
         byte = self.__file.read(1)
         self.__file.seek(position)
 
-        return byte
+        return self.__byte_to_char(byte)
+
+    def __byte_to_char(self, byte):
+        return str(byte, UTF_8)
 
     def read_bit(self):
         if not self.__last_byte or self.__bits_counter == BITS_IN_BYTE:
-            self.__last_byte = self.__get_bits_from_byte(self.read_byte())
+            byte = self.__file.read(1)
+            if not byte:
+                return None
+            self.__last_byte = self.__get_bits_from_byte(byte)
             self.__bits_counter = 0
 
         bit = self.__last_byte[self.__bits_counter]

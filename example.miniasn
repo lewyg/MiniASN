@@ -5,7 +5,7 @@ b::=CHOICE[a]
 c UINT[a>0 AND a < 100]
 d BOOL[a == 0]
 e BITSTRING_16[a == 100 OR a == 110]
-f DITSTRING[DEFAULT]
+f BITSTRING[DEFAULT]
 }
 g ::= CHOICE[b]
 {

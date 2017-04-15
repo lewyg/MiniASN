@@ -6,7 +6,7 @@ class LexerException(Exception):
         self.__reason = reason
 
     def __str__(self):
-        return 'Found lexer exception at line {}, column {}: \n\t{}'.format(self.__line, self.__column, self.__reason)
+        return 'Lexer exception occurred at line {}, column {}: \n\t{}'.format(self.__line, self.__column, self.__reason)
 
 
 class RequiredSpaceException(LexerException):
@@ -15,7 +15,7 @@ class RequiredSpaceException(LexerException):
         super(RequiredSpaceException, self).__init__(line, column, reason)
 
 
-class UnexpectedSymbolException(LexerException):
+class UndefinedSymbolException(LexerException):
     def __init__(self, line, column, char):
-        reason = 'Unexpected symbol {}'.format(char)
-        super(UnexpectedSymbolException, self).__init__(line, column, reason)
+        reason = 'Undefined symbol {}'.format(char)
+        super(UndefinedSymbolException, self).__init__(line, column, reason)
