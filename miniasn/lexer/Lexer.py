@@ -91,7 +91,7 @@ class Lexer:
         if not next_char:
             return None
 
-        possible_descriptors = self.__update_possible_descriptors(descriptors, next_char, len(word))
+        possible_descriptors = self.__update_possible_descriptors(descriptors, next_char, 0)
 
         while possible_descriptors:
             descriptors = possible_descriptors
@@ -122,7 +122,10 @@ class Lexer:
         if next_char.isspace():
             return
 
-        if token_descriptor.required_space and [token_desc for token_desc in self.__descriptors_required_space
-                                                if token_desc.qualifier(next_char, len(word), token_desc.token_value)]:
+        if token_descriptor.required_space and self.__next_token_required_space(next_char):
             raise RequiredSpaceException(self.__file_reader.current_line, self.__file_reader.current_column,
                                          '{}({})'.format(word, token_descriptor.token_name))
+
+    def __next_token_required_space(self, next_char):
+        return bool([token_desc for token_desc in self.__descriptors_required_space
+                     if token_desc.qualifier(next_char, 0, token_desc.token_value)])
