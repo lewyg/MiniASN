@@ -18,9 +18,9 @@ class Lexer:
                         required_space=False),
         TokenDescriptor(token_type=TokenType.LESS_OR_EQUAL,
                         required_space=False),
-        TokenDescriptor(token_type=TokenType.ASSIGN,
+        TokenDescriptor(token_type=TokenType.DECLARER,
                         required_space=False),
-        TokenDescriptor(token_type=TokenType.PARAMETRIZE,
+        TokenDescriptor(token_type=TokenType.PARAMETERIZER,
                         required_space=False),
 
         TokenDescriptor(token_type=TokenType.LEFT_BRACKET,
@@ -36,7 +36,7 @@ class Lexer:
         TokenDescriptor(token_type=TokenType.CLIP_RIGHT_BRACKET,
                         required_space=False),
 
-        TokenDescriptor(token_type=TokenType.UNIT),
+        TokenDescriptor(token_type=TokenType.UINT),
         TokenDescriptor(token_type=TokenType.BITSTRING),
         TokenDescriptor(token_type=TokenType.BOOL),
         TokenDescriptor(token_type=TokenType.ARRAY),

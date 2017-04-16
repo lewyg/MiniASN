@@ -1,15 +1,15 @@
-MojaSekwencjaChoice::= SEQUENCE {
-a UINT_8
+bit16 ::= BITSTRING_16
+uint8 ::= UINT_8
+
 b::=CHOICE[a]
 {
-c UINT[a>0 AND a < 100]
-d BOOL[a == 0]
-e BITSTRING_16[a == 100 OR a == 110]
-f BITSTRING[DEFAULT]
+    UINT(a>0 AND a < 100)
+    BOOL(a == 0)
+    bit16(a == 100 OR a == 110)
+    BITSTRING(DEFAULT)
 }
-g ::= CHOICE[b]
-{
-i BOOL[b == TRUE]
-j UINT[DEFAULT]
-}
+
+MojaSekwencjaChoice[x]::= SEQUENCE {
+    a uint8
+    g b[x]
 }

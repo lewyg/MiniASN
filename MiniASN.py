@@ -1,14 +1,15 @@
 from miniasn.lexer.Lexer import Lexer
+from miniasn.parser.Parser import Parser
 from miniasn.reader.FileReader import FileReader
 
 
 def main():
     file_reader = FileReader('example.miniasn')
     lexer = Lexer(file_reader)
-    t = lexer.read_next_token()
-    while t:
-        print(t)
-        t = lexer.read_next_token()
+    p = Parser(lexer)
+    tree = p.parse()
+
+    print(tree)
 
 
 if __name__ == "__main__":
