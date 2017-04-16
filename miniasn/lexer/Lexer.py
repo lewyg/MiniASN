@@ -62,11 +62,18 @@ class Lexer:
 
     def __init__(self, file_reader):
         self.__file_reader = file_reader
+        self.__descriptors_required_space = [token_descriptor for token_descriptor in self.__descriptors
+                                             if token_descriptor.required_space]
+        self.__token = None
 
     def get_token(self):
-        self.__ignore_whitespaces()
+        return self.__token
 
-        return self.__read_token()
+    def read_next_token(self):
+        self.__ignore_whitespaces()
+        self.__token = self.__read_token()
+
+        return self.get_token()
 
     def __ignore_whitespaces(self):
         next_char = self.__file_reader.preview_next_char()
@@ -115,6 +122,7 @@ class Lexer:
         if next_char.isspace():
             return
 
-        if token_descriptor.required_space and next_char.isalnum():
+        if token_descriptor.required_space and [token_desc for token_desc in self.__descriptors_required_space
+                                                if token_desc.qualifier(next_char, len(word), token_desc.token_value)]:
             raise RequiredSpaceException(self.__file_reader.current_line, self.__file_reader.current_column,
                                          '{}({})'.format(word, token_descriptor.token_name))

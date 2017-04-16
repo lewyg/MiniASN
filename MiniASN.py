@@ -5,10 +5,10 @@ from miniasn.reader.FileReader import FileReader
 def main():
     file_reader = FileReader('example.miniasn')
     lexer = Lexer(file_reader)
-    t = lexer.get_token()
+    t = lexer.read_next_token()
     while t:
         print(t)
-        t = lexer.get_token()
+        t = lexer.read_next_token()
 
 
 if __name__ == "__main__":
