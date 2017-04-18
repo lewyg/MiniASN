@@ -17,3 +17,10 @@ class DataStructure(Node):
             children.append(node)
 
         return DataStructure(children)
+
+    def __str__(self):
+        result = ''
+        for declaration in self.children:
+            result += '{}\n\n'.format(declaration)
+
+        return result[:-2]

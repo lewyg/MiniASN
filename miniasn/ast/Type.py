@@ -16,3 +16,6 @@ class Type(Node):
                                           NodeType.DECLARED_TYPE])
 
         return Type(type)
+
+    def __str__(self):
+        return str(self.type)

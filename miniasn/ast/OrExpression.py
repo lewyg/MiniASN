@@ -22,3 +22,10 @@ class OrExpression(Node):
             children.append(and_expression)
 
         return OrExpression(children)
+
+    def __str__(self):
+        result = str(self.children[0])
+        for and_expression in self.children[1:]:
+            result += ' or {}'.format(and_expression)
+
+        return result

@@ -16,3 +16,6 @@ class Parameter(Node):
                                                NodeType.NUMBER])
 
         return Parameter(parameter)
+
+    def __str__(self):
+        return str(self.parameter)

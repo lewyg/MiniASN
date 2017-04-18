@@ -17,3 +17,6 @@ class Number(Node):
 
     def value(self):
         return int(self.__value.token_value)
+
+    def __str__(self):
+        return str(self.value())

@@ -22,3 +22,6 @@ class Declaration(Node):
                                                  NodeType.ARRAY_DECLARATION])
 
         return Declaration(identifier, declaration)
+
+    def __str__(self):
+        return '{} ::= {}'.format(self.identifier, self.declaration)

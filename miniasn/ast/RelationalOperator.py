@@ -23,3 +23,6 @@ class RelationalOperator(Node):
                                               TokenType.LESS,
                                               TokenType.LESS_OR_EQUAL])
         return RelationalOperator(operator)
+
+    def __str__(self):
+        return str(self.operator)

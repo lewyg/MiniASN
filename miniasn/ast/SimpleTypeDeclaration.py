@@ -18,3 +18,6 @@ class SimpleTypeDeclaration(Node):
         parameter = parser.parse_node(NodeType.NUMBER)
 
         return SimpleTypeDeclaration(type, parameter)
+
+    def __str__(self):
+        return '{}_{}'.format(self.type, self.parameter)

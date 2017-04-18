@@ -25,4 +25,4 @@ class Token:
         return "{}({})".format(self.token_value, self.token_type.name)
 
     def __str__(self):
-        return '{:24} -\t {}'.format(self.token_type.name, self.token_value)
+        return self.token_value

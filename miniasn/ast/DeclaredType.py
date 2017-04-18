@@ -16,3 +16,7 @@ class DeclaredType(Node):
         parameters = parser.parse_node(NodeType.PARAMETERS) if parser.can_parse(NodeType.PARAMETERS) else None
 
         return DeclaredType(identifier, parameters)
+
+    def __str__(self):
+        return '{}{}'.format(self.identifier, self.parameters or '')
+

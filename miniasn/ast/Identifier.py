@@ -17,3 +17,6 @@ class Identifier(Node):
 
     def value(self):
         return self.__value.token_value
+
+    def __str__(self):
+        return self.value()

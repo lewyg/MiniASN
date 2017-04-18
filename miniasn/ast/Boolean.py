@@ -8,7 +8,7 @@ class Boolean(Node):
 
     def __init__(self, value):
         super().__init__()
-        self.__value = value
+        self.value = value
 
     @staticmethod
     def parse(parser):
@@ -18,4 +18,7 @@ class Boolean(Node):
         return Boolean(bool_token)
 
     def value(self):
-        return self.__value.token_type == TokenType.TRUE
+        return self.value.token_type == TokenType.TRUE
+
+    def __str__(self):
+        return str(self.value())

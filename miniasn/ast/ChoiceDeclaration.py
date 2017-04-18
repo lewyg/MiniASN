@@ -34,3 +34,10 @@ class ChoiceDeclaration(Node):
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
         return ChoiceDeclaration(children, parameter)
+
+    def __str__(self):
+        result = 'CHOICE[{}]'.format(self.parameter)
+        for attribute in self.children:
+            result += '\n\t{}'.format(attribute)
+
+        return result

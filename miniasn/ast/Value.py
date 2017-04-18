@@ -17,3 +17,6 @@ class Value(Node):
                                            NodeType.BOOLEAN])
 
         return Value(value)
+
+    def __str__(self):
+        return str(self.value)

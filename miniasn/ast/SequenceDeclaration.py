@@ -30,3 +30,10 @@ class SequenceDeclaration(Node):
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
         return SequenceDeclaration(children, parameters)
+
+    def __str__(self):
+        result = 'SEQUENCE{}'.format(self.parameters)
+        for attribute in self.children:
+            result += '\n\t{}'.format(attribute)
+
+        return result

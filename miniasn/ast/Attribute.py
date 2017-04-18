@@ -17,3 +17,6 @@ class Attribute(Node):
         type = parser.parse_node(NodeType.TYPE)
 
         return Attribute(identifier, type)
+
+    def __str__(self):
+        return '{} {}'.format(self.identifier, self.type)

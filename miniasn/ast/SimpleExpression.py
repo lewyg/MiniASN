@@ -18,3 +18,6 @@ class SimpleExpression(Node):
         right_operand = parser.parse_node(NodeType.VALUE)
 
         return SimpleExpression(left_operand, operator, right_operand)
+
+    def __str__(self):
+        return '{} {} {}'.format(self.left_operand, self.operator, self.right_operand)

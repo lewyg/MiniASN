@@ -18,3 +18,6 @@ class SimpleType(Node):
                                           TokenType.BOOL])
 
         return SimpleType(type)
+
+    def __str__(self):
+        return str(self.type)

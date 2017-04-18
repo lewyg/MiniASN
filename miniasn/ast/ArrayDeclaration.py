@@ -33,3 +33,10 @@ class ArrayDeclaration(Node):
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
         return ArrayDeclaration(children, parameter)
+
+    def __str__(self):
+        result = 'ARRAY[{}]'.format(self.parameter)
+        for attribute in self.children:
+            result += '\n\t{}'.format(attribute)
+
+        return result

@@ -23,3 +23,10 @@ class AndExpression(Node):
             children.append(simple_expression)
 
         return AndExpression(children)
+
+    def __str__(self):
+        result = str(self.children[0])
+        for simple_expression in self.children[1:]:
+            result += ' and {}'.format(simple_expression)
+
+        return result
