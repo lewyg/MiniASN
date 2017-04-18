@@ -4,8 +4,8 @@ declaration = id '::=' ( simple_type_declaration | sequence_declaration | choice
 sequence_declaration = 'SEQUENCE' [ parameters ] '{' attribute { attribute } '}'
 
 choice_declaration = 'CHOICE' '[' parameter ']' '{' { choice_attribute } choice_attribute_default '}'
-choice_attribute = type '(' expression ')'
-choice_attribute_default = type '(' 'DEFAULT' ')'
+choice_attribute = type '(' ( or_expression | 'DEFAULT' ) ')'
+choice_expression = ( or_expression | 'DEFAULT' )
 
 array_declaration = 'ARRAY' '[' parameter ']' '{' attribute { attribute }'}'
 
@@ -19,7 +19,7 @@ type = ( simple_type | declared_type )
 simple_type = ( 'UINT' | 'BITSTRING' | 'BOOL' )
 declared_type = id [ parameters ]
 
-expression = and_expression { 'OR' and_expression }
+or_expression = and_expression { 'OR' and_expression }
 and_expression= simple_expression { 'AND' simple_expression }
 simple_expression = id relational_operator value
 relational_operator = ( '==' | '!=' | '<' | '>' | '<=' | '>=' )
