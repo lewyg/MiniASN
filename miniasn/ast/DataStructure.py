@@ -12,7 +12,7 @@ class DataStructure(Node):
     @staticmethod
     def parse(parser):
         children = []
-        while parser.can_parse(NodeType.DECLARATION):
+        while not parser.end_of_file():
             node = parser.parse_node(NodeType.DECLARATION)
             children.append(node)
 
