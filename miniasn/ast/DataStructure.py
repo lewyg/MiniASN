@@ -13,7 +13,10 @@ class DataStructure(Node):
     def parse(parser, *args, **kwargs):
         declarations = []
         while not parser.end_of_file():
-            declarations.append(parser.parse_node(NodeType.DECLARATION))
+            parser.local_names = []
+            declaration = parser.parse_node(NodeType.DECLARATION)
+            declarations.append(declaration)
+            parser.declared_types.append(declaration)
 
         return DataStructure(declarations)
 

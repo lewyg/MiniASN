@@ -9,7 +9,12 @@ b::=CHOICE[a]
     BITSTRING(DEFAULT)
 }
 
-MojaSekwencjaChoice::= SEQUENCE[x] {
+sss::= SEQUENCE[x] {
     a uint8
     g b[x]
+}
+
+MojaSekwencjaSeq::= SEQUENCE {
+    a uint8
+    g sss[as]
 }

@@ -19,5 +19,8 @@ class SimpleType(Node):
 
         return SimpleType(type)
 
+    def required_arguments(self):
+        return 0
+
     def __str__(self):
         return str(self.type)

@@ -6,6 +6,7 @@ from miniasn.token.TokenType import TokenType
 
 class Parser:
     __nodes = Nodes.nodes
+    declared_types = []
 
     def __init__(self, lexer):
         self.__lexer = lexer
@@ -52,6 +53,13 @@ class Parser:
 
     def end_of_file(self):
         return self.__get_token().token_type == TokenType.END_OF_FILE
+
+    def get_declared_type(self, identifier):
+        for declared_type in self.declared_types:
+            if declared_type.identifier.value() == identifier.value():
+                return declared_type
+
+        return None
 
     def __parse_token(self, token_type):
         token = self.__get_token()

@@ -16,7 +16,7 @@ class ArrayDeclaration(Node):
         parser.parse_node(TokenType.ARRAY)
 
         parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
-        arguments = parser.parse_node(NodeType.IDENTIFIER)
+        argument = parser.parse_node(NodeType.IDENTIFIER)
         parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
@@ -28,8 +28,11 @@ class ArrayDeclaration(Node):
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
-        return ArrayDeclaration(attributes, arguments)
+        return ArrayDeclaration(attributes, [argument])
+
+    def required_arguments(self):
+        return 1
 
     def __str__(self):
-        return 'ARRAY[{}]\n\t{}'.format(self.arguments,
-                                    '\n\t'.join([str(attribute) for attribute in self.attributes]))
+        return 'ARRAY[{}]\n\t{}'.format(self.arguments[0],
+                                        '\n\t'.join([str(attribute) for attribute in self.attributes]))

@@ -26,8 +26,13 @@ class SequenceDeclaration(Node):
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
-        return SequenceDeclaration(attributes, arguments)
+        return SequenceDeclaration(attributes, arguments.arguments if arguments else [])
+
+    def required_arguments(self):
+        return len(self.arguments) if self.arguments else 0
 
     def __str__(self):
-        return 'SEQUENCE{}\n\t{}'.format(self.arguments,
+        arguments = '[{}]'.format(' '.join([str(argument) for argument in self.arguments]))
+
+        return 'SEQUENCE{}\n\t{}'.format(arguments if self.arguments else '',
                                          '\n\t'.join([str(attribute) for attribute in self.attributes]))

@@ -6,9 +6,9 @@ from miniasn.token.TokenType import TokenType
 class ChoiceDeclaration(Node):
     first = TokenType.CHOICE
 
-    def __init__(self, choice_attributes, arguments):
+    def __init__(self, attributes, arguments):
         super().__init__()
-        self.choice_attributes = choice_attributes
+        self.attributes = attributes
         self.arguments = arguments
 
     @staticmethod
@@ -16,23 +16,26 @@ class ChoiceDeclaration(Node):
         parser.parse_node(TokenType.CHOICE)
 
         parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
-        arguments = parser.parse_node(NodeType.IDENTIFIER)
+        argument = parser.parse_node(NodeType.IDENTIFIER)
         parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 
-        choice_attributes = [parser.parse_node(NodeType.CHOICE_ATTRIBUTE)]
+        attributes = [parser.parse_node(NodeType.CHOICE_ATTRIBUTE)]
 
         while parser.can_parse(NodeType.CHOICE_ATTRIBUTE):
-            choice_attribute = parser.parse_node(NodeType.CHOICE_ATTRIBUTE)
-            choice_attributes.append(choice_attribute)
-            if choice_attribute.is_default():
+            attribute = parser.parse_node(NodeType.CHOICE_ATTRIBUTE)
+            attributes.append(attribute)
+            if attribute.is_default():
                 break
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
-        return ChoiceDeclaration(choice_attributes, arguments)
+        return ChoiceDeclaration(attributes, [argument])
+
+    def required_arguments(self):
+        return 1
 
     def __str__(self):
-        return 'CHOICE[{}]\n\t{}'.format(self.arguments,
-                                         '\n\t'.join([str(attribute) for attribute in self.choice_attributes]))
+        return 'CHOICE[{}]\n\t{}'.format(self.arguments[0],
+                                         '\n\t'.join([str(attribute) for attribute in self.attributes]))
