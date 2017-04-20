@@ -13,7 +13,7 @@ def main():
         tree = p.parse()
 
         print(tree)
-    except:
+    except Exception as ex:
         print(traceback.format_exc())
 
 

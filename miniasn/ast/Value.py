@@ -12,7 +12,7 @@ class Value(Node):
         self.value = value
 
     @staticmethod
-    def parse(parser):
+    def parse(parser, *args, **kwargs):
         value = parser.parse_or_node_list([TokenType.NUMBER_LITERAL,
                                            NodeType.BOOLEAN])
 

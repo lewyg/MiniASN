@@ -13,7 +13,7 @@ class ChoiceAttribute(Node):
         self.expression = expression
 
     @staticmethod
-    def parse(parser):
+    def parse(parser, *args, **kwargs):
         type = parser.parse_node(NodeType.TYPE)
 
         parser.parse_node(TokenType.LEFT_BRACKET)

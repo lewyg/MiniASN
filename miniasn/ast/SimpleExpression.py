@@ -12,7 +12,7 @@ class SimpleExpression(Node):
         self.right_operand = right_operand
 
     @staticmethod
-    def parse(parser):
+    def parse(parser, *args, **kwargs):
         left_operand = parser.parse_node(NodeType.IDENTIFIER)
         operator = parser.parse_node(NodeType.RELATIONAL_OPERATOR)
         right_operand = parser.parse_node(NodeType.VALUE)

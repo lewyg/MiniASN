@@ -12,7 +12,7 @@ class SimpleTypeDeclaration(Node):
         self.parameter = parameter
 
     @staticmethod
-    def parse(parser):
+    def parse(parser, *args, **kwargs):
         type = parser.parse_node(NodeType.SIMPLE_TYPE)
         parser.parse_node(TokenType.PARAMETERIZER)
         parameter = parser.parse_node(NodeType.NUMBER)

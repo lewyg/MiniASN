@@ -12,7 +12,7 @@ class SimpleType(Node):
         self.type = type
 
     @staticmethod
-    def parse(parser):
+    def parse(parser, *args, **kwargs):
         type = parser.parse_or_node_list([TokenType.UINT,
                                           TokenType.BITSTRING,
                                           TokenType.BOOL])

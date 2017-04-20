@@ -33,7 +33,7 @@ class LexerTest(TestCase):
         lexer = Lexer(FileReaderMocked(''))
         token = lexer.read_next_token()
 
-        self.assertIsNone(token)
+        self.assertEqual(token.token_type, TokenType.END_OF_FILE)
 
     def test_get_token(self):
         lexer = Lexer(FileReaderMocked('id'))

@@ -1,4 +1,4 @@
-from miniasn.exceptions.ParserExceptions import UnexpectedTokenException, EndOfFileException
+from miniasn.exceptions.ParserExceptions import UnexpectedTokenException
 from miniasn.node.NodeType import NodeType
 from miniasn.parser import Nodes
 from miniasn.token.TokenType import TokenType
@@ -16,52 +16,46 @@ class Parser:
 
         return root
 
-    def parse_or_node_list(self, or_list):
+    def parse_or_node_list(self, or_list, *args, **kwargs):
         for node_type in or_list:
             if self.can_parse(node_type):
-                return self.parse_node(node_type)
+                return self.parse_node(node_type, *args, **kwargs)
 
         token = self.__get_token()
-        if token:
-            raise UnexpectedTokenException(token.line, token.column, token.token_type, [node.name for node in or_list])
-        else:
-            raise EndOfFileException([node.name for node in or_list])
+        raise UnexpectedTokenException(token.line, token.column, token.token_type, [node.name for node in or_list])
 
-    def can_parse(self, first):
-        if first in TokenType:
-            return self.__check_token_type(first)
+    def can_parse(self, node):
+        if node in TokenType:
+            return self.__check_token_type(node)
 
-        if first in NodeType:
-            type = self.__nodes[first]
+        if node in NodeType:
+            type = self.__nodes[node]
             return self.can_parse(type.first)
 
-        for node_type in first:
+        for node_type in node:
             if self.can_parse(node_type):
                 return True
 
         return False
 
-    def parse_node(self, node_type):
+    def parse_node(self, node_type, *args, **kwargs):
         if node_type in NodeType:
             type = self.__nodes[node_type]
-            node = type.parse(self)
+            node = type.parse(self, *args, **kwargs)
         else:
             node = self.__parse_token(node_type)
 
         return node
 
     def end_of_file(self):
-        return self.__get_token() is None
+        return self.__get_token().token_type == TokenType.END_OF_FILE
 
     def __parse_token(self, token_type):
         token = self.__get_token()
         if self.__check_token_type(token_type):
             self.__advance()
         else:
-            if token:
-                raise UnexpectedTokenException(token.line, token.column, token.token_type, token_type)
-            else:
-                raise EndOfFileException(token_type)
+            raise UnexpectedTokenException(token.line, token.column, token.token_type, token_type)
 
         return token
 

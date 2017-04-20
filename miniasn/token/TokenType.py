@@ -34,3 +34,5 @@ class TokenType(Enum):
 
     NUMBER_LITERAL = '123'
     IDENTIFIER = 'ID'
+
+    END_OF_FILE = ''

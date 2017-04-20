@@ -6,19 +6,19 @@ class Boolean(Node):
     first = [TokenType.TRUE,
              TokenType.FALSE]
 
-    def __init__(self, value):
+    def __init__(self, bool):
         super().__init__()
-        self.value = value
+        self.bool = bool
 
     @staticmethod
-    def parse(parser):
-        bool_token = parser.parse_or_node_list([TokenType.TRUE,
-                                                TokenType.FALSE])
+    def parse(parser, *args, **kwargs):
+        boolean = parser.parse_or_node_list([TokenType.TRUE,
+                                             TokenType.FALSE])
 
-        return Boolean(bool_token)
+        return Boolean(boolean)
 
     def value(self):
-        return self.value.token_type == TokenType.TRUE
+        return self.bool.token_type == TokenType.TRUE
 
     def __str__(self):
         return str(self.value())

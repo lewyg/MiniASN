@@ -1,6 +1,7 @@
 from miniasn.lexer import Descriptors
 from miniasn.token.Token import Token
 from miniasn.exceptions.LexerExceptions import UndefinedSymbolException, RequiredSpaceException
+from miniasn.token.TokenType import TokenType
 
 
 class Lexer:
@@ -35,7 +36,7 @@ class Lexer:
         next_char = self.__file_reader.preview_next_char()
 
         if not next_char:
-            return None
+            return Token(TokenType.END_OF_FILE, word, line, column)
 
         possible_descriptors = self.__update_possible_descriptors(descriptors, next_char, 0)
 

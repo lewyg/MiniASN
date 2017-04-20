@@ -15,7 +15,7 @@ class RelationalOperator(Node):
         self.operator = operator
 
     @staticmethod
-    def parse(parser):
+    def parse(parser, *args, **kwargs):
         operator = parser.parse_or_node_list([TokenType.EQUAL,
                                               TokenType.NOT_EQUAL,
                                               TokenType.GREATER,

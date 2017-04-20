@@ -8,30 +8,31 @@ class Parameters(Node):
 
     def __init__(self, parameters):
         super().__init__()
-        self.children = parameters
+        self.parameters = parameters
 
     @staticmethod
-    def parse(parser):
-        children = []
+    def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
 
+        parameters = []
+
         parameter = parser.parse_node(NodeType.PARAMETER)
-        children.append(parameter)
+        parameters.append(parameter)
 
         while parser.can_parse(NodeType.PARAMETER):
             parameter = parser.parse_node(NodeType.PARAMETER)
-            children.append(parameter)
+            parameters.append(parameter)
 
         parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
 
-        return Parameters(children)
+        return Parameters(parameters)
 
     def __str__(self):
-        if not self.children:
+        if not self.parameters:
             return ''
 
-        result = '[{}'.format(self.children[0])
-        for parameter in self.children[1:]:
+        result = '[{}'.format(self.parameters[0])
+        for parameter in self.parameters[1:]:
             result += ' {}'.format(parameter)
         result += ']'
 

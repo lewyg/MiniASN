@@ -11,7 +11,7 @@ class Parameter(Node):
         self.parameter = parameter
 
     @staticmethod
-    def parse(parser):
+    def parse(parser, *args, **kwargs):
         parameter = parser.parse_or_node_list([NodeType.IDENTIFIER,
                                                NodeType.NUMBER])
 

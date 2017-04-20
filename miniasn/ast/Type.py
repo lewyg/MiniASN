@@ -11,7 +11,7 @@ class Type(Node):
         self.type = type
 
     @staticmethod
-    def parse(parser):
+    def parse(parser, *args, **kwargs):
         type = parser.parse_or_node_list([NodeType.SIMPLE_TYPE,
                                           NodeType.DECLARED_TYPE])
 

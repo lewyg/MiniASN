@@ -1,11 +1,10 @@
 class Node:
     def __init__(self):
-        self.parent = None
-        self.children = []
+        pass
 
     def read_data(self):
         pass
 
     @staticmethod
-    def parse(parser):
+    def parse(parser, *args, **kwargs):
         pass

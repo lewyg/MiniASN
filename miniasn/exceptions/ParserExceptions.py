@@ -13,11 +13,11 @@ class ParserException(Exception):
 
 class UnexpectedTokenException(ParserException):
     def __init__(self, line, column, token, expected_token):
-        reason = 'Unexpected token {}, expected {}'.format(token, expected_token)
+        reason = 'Unexpected token {}, expected {}'.format(token.name, expected_token.name)
         super(UnexpectedTokenException, self).__init__(line, column, reason)
 
 
-class EndOfFileException(ParserException):
-    def __init__(self, expected_token):
-        reason = 'End of file, expected {}'.format(expected_token)
-        super(EndOfFileException, self).__init__('-', '-', reason)
+class NameInUseException(ParserException):
+    def __init__(self, line, column, name):
+        reason = 'Name {} is already in use'.format(name)
+        super(NameInUseException, self).__init__(line, column, reason)
