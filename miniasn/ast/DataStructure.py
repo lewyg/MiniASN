@@ -13,14 +13,9 @@ class DataStructure(Node):
     def parse(parser, *args, **kwargs):
         declarations = []
         while not parser.end_of_file():
-            declaration = parser.parse_node(NodeType.DECLARATION)
-            declarations.append(declaration)
+            declarations.append(parser.parse_node(NodeType.DECLARATION))
 
         return DataStructure(declarations)
 
     def __str__(self):
-        result = ''
-        for declaration in self.declarations:
-            result += '{}\n\n'.format(declaration)
-
-        return result[:-2]
+        return '\n\n'.join([str(declaration) for declaration in self.declarations])

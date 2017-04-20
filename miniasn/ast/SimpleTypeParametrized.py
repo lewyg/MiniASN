@@ -25,4 +25,4 @@ class SimpleTypeParametrized(Node):
         return SimpleTypeParametrized(type, parameter)
 
     def __str__(self):
-        return '{}_{}'.format(self.type, self.parameter)
+        return '{}'.format(self.type) + ('_{}'.format(self.parameter) if self.parameter else '')

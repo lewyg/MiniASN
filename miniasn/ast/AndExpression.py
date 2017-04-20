@@ -12,21 +12,13 @@ class AndExpression(Node):
 
     @staticmethod
     def parse(parser, *args, **kwargs):
-        simple_expressions = []
-
-        simple_expression = parser.parse_node(NodeType.SIMPLE_EXPRESSION)
-        simple_expressions.append(simple_expression)
+        simple_expressions = [parser.parse_node(NodeType.SIMPLE_EXPRESSION)]
 
         while parser.can_parse(TokenType.AND):
             parser.parse_node(TokenType.AND)
-            simple_expression = parser.parse_node(NodeType.SIMPLE_EXPRESSION)
-            simple_expressions.append(simple_expression)
+            simple_expressions.append(parser.parse_node(NodeType.SIMPLE_EXPRESSION))
 
         return AndExpression(simple_expressions)
 
     def __str__(self):
-        result = str(self.simple_expressions[0])
-        for simple_expression in self.simple_expressions[1:]:
-            result += ' and {}'.format(simple_expression)
-
-        return result
+        return ' and '.join([str(expression) for expression in self.simple_expressions])

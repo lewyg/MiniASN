@@ -21,9 +21,7 @@ class ChoiceDeclaration(Node):
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 
-        choice_attributes = []
-        choice_attribute = parser.parse_node(NodeType.CHOICE_ATTRIBUTE)
-        choice_attributes.append(choice_attribute)
+        choice_attributes = [parser.parse_node(NodeType.CHOICE_ATTRIBUTE)]
 
         while parser.can_parse(NodeType.CHOICE_ATTRIBUTE):
             choice_attribute = parser.parse_node(NodeType.CHOICE_ATTRIBUTE)
@@ -36,8 +34,5 @@ class ChoiceDeclaration(Node):
         return ChoiceDeclaration(choice_attributes, arguments)
 
     def __str__(self):
-        result = 'CHOICE[{}]'.format(self.arguments)
-        for attribute in self.choice_attributes:
-            result += '\n\t{}'.format(attribute)
-
-        return result
+        return 'CHOICE[{}]\n\t{}'.format(self.arguments,
+                                         '\n\t'.join([str(attribute) for attribute in self.choice_attributes]))

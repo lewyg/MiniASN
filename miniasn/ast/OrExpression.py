@@ -12,21 +12,13 @@ class OrExpression(Node):
 
     @staticmethod
     def parse(parser, *args, **kwargs):
-        and_expressions = []
-
-        and_expression = parser.parse_node(NodeType.AND_EXPRESSION)
-        and_expressions.append(and_expression)
+        and_expressions = [parser.parse_node(NodeType.AND_EXPRESSION)]
 
         while parser.can_parse(TokenType.OR):
             parser.parse_node(TokenType.OR)
-            and_expression = parser.parse_node(NodeType.AND_EXPRESSION)
-            and_expressions.append(and_expression)
+            and_expressions.append(parser.parse_node(NodeType.AND_EXPRESSION))
 
         return OrExpression(and_expressions)
 
     def __str__(self):
-        result = str(self.and_expressions[0])
-        for and_expression in self.and_expressions[1:]:
-            result += ' or {}'.format(and_expression)
-
-        return result
+        return ' or '.join([str(expression) for expression in self.and_expressions])

@@ -22,7 +22,10 @@ class Parser:
                 return self.parse_node(node_type, *args, **kwargs)
 
         token = self.__get_token()
-        raise UnexpectedTokenException(token.line, token.column, token.token_type, [node.name for node in or_list])
+        raise UnexpectedTokenException(token.line,
+                                       token.column,
+                                       token.token_type,
+                                       [node.name for node in or_list])
 
     def can_parse(self, node):
         if node in TokenType:
@@ -55,7 +58,10 @@ class Parser:
         if self.__check_token_type(token_type):
             self.__advance()
         else:
-            raise UnexpectedTokenException(token.line, token.column, token.token_type, token_type)
+            raise UnexpectedTokenException(token.line,
+                                           token.column,
+                                           token.token_type,
+                                           token_type)
 
         return token
 

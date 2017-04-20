@@ -21,22 +21,15 @@ class ArrayDeclaration(Node):
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 
-        attributes = []
-
-        attribute = parser.parse_node(NodeType.ATTRIBUTE)
-        attributes.append(attribute)
+        attributes = [parser.parse_node(NodeType.ATTRIBUTE)]
 
         while parser.can_parse(NodeType.ATTRIBUTE):
-            attribute = parser.parse_node(NodeType.ATTRIBUTE)
-            attributes.append(attribute)
+            attributes.append(parser.parse_node(NodeType.ATTRIBUTE))
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
         return ArrayDeclaration(attributes, arguments)
 
     def __str__(self):
-        result = 'ARRAY[{}]'.format(self.arguments)
-        for attribute in self.attributes:
-            result += '\n\t{}'.format(attribute)
-
-        return result
+        return 'ARRAY[{}]\n\t{}'.format(self.arguments,
+                                    '\n\t'.join([str(attribute) for attribute in self.attributes]))

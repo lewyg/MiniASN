@@ -19,5 +19,5 @@ class DeclaredType(Node):
         return DeclaredType(identifier, parameters)
 
     def __str__(self):
-        return '{}{}'.format(self.identifier, self.parameters or '')
+        return '{}{}'.format(self.identifier, self.parameters)
 
