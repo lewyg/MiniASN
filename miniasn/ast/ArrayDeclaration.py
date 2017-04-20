@@ -6,17 +6,17 @@ from miniasn.token.TokenType import TokenType
 class ArrayDeclaration(Node):
     first = TokenType.ARRAY
 
-    def __init__(self, attributes, parameter):
+    def __init__(self, attributes, arguments):
         super().__init__()
         self.attributes = attributes
-        self.parameter = parameter
+        self.arguments = arguments
 
     @staticmethod
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.ARRAY)
 
         parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
-        parameter = parser.parse_node(NodeType.PARAMETER)
+        arguments = parser.parse_node(NodeType.IDENTIFIER)
         parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
@@ -32,10 +32,10 @@ class ArrayDeclaration(Node):
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
-        return ArrayDeclaration(attributes, parameter)
+        return ArrayDeclaration(attributes, arguments)
 
     def __str__(self):
-        result = 'ARRAY[{}]'.format(self.parameter)
+        result = 'ARRAY[{}]'.format(self.arguments)
         for attribute in self.attributes:
             result += '\n\t{}'.format(attribute)
 

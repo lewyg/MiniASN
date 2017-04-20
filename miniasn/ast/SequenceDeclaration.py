@@ -6,16 +6,16 @@ from miniasn.token.TokenType import TokenType
 class SequenceDeclaration(Node):
     first = TokenType.SEQUENCE
 
-    def __init__(self, attributes, parameters):
+    def __init__(self, attributes, arguments):
         super().__init__()
         self.attributes = attributes
-        self.parameters = parameters
+        self.arguments = arguments
 
     @staticmethod
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.SEQUENCE)
 
-        parameters = parser.parse_node(NodeType.PARAMETERS) if parser.can_parse(NodeType.PARAMETERS) else None
+        arguments = parser.parse_node(NodeType.ARGUMENTS) if parser.can_parse(NodeType.ARGUMENTS) else None
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 
@@ -30,10 +30,10 @@ class SequenceDeclaration(Node):
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
-        return SequenceDeclaration(attributes, parameters)
+        return SequenceDeclaration(attributes, arguments)
 
     def __str__(self):
-        result = 'SEQUENCE{}'.format(self.parameters)
+        result = 'SEQUENCE{}'.format(self.arguments)
         for attribute in self.attributes:
             result += '\n\t{}'.format(attribute)
 

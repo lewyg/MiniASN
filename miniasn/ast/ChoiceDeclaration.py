@@ -6,17 +6,17 @@ from miniasn.token.TokenType import TokenType
 class ChoiceDeclaration(Node):
     first = TokenType.CHOICE
 
-    def __init__(self, choice_attributes, parameter):
+    def __init__(self, choice_attributes, arguments):
         super().__init__()
         self.choice_attributes = choice_attributes
-        self.parameter = parameter
+        self.arguments = arguments
 
     @staticmethod
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.CHOICE)
 
         parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
-        parameter = parser.parse_node(NodeType.PARAMETER)
+        arguments = parser.parse_node(NodeType.IDENTIFIER)
         parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
@@ -33,10 +33,10 @@ class ChoiceDeclaration(Node):
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
-        return ChoiceDeclaration(choice_attributes, parameter)
+        return ChoiceDeclaration(choice_attributes, arguments)
 
     def __str__(self):
-        result = 'CHOICE[{}]'.format(self.parameter)
+        result = 'CHOICE[{}]'.format(self.arguments)
         for attribute in self.choice_attributes:
             result += '\n\t{}'.format(attribute)
 

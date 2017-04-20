@@ -17,16 +17,12 @@ class Declaration(Node):
 
         parser.parse_node(TokenType.DECLARER)
 
-        declaration = parser.parse_or_node_list([NodeType.SIMPLE_TYPE_DECLARATION,
-                                                 NodeType.SEQUENCE_DECLARATION,
+        declaration = parser.parse_or_node_list([NodeType.SEQUENCE_DECLARATION,
                                                  NodeType.CHOICE_DECLARATION,
-                                                 NodeType.ARRAY_DECLARATION])
+                                                 NodeType.ARRAY_DECLARATION,
+                                                 NodeType.SIMPLE_TYPE_PARAMETRIZED])
 
         return Declaration(identifier, declaration)
-
-    @staticmethod
-    def __name_in_use(declared_types, name):
-        return any(declared_type.identifier.value() == name for declared_type in declared_types)
 
     def __str__(self):
         return '{} ::= {}'.format(self.identifier, self.declaration)

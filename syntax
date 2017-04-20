@@ -1,23 +1,23 @@
 data_structure = { declaration }
-declaration = id '::=' ( simple_type_declaration | sequence_declaration | choice_declaration | array_declaration )
+declaration = id '::=' ( sequence_declaration | choice_declaration | array_declaration | simple_type )
 
-sequence_declaration = 'SEQUENCE' [ parameters ] '{' attribute { attribute } '}'
+sequence_declaration = 'SEQUENCE' [ arguments ] '{' attribute { attribute } '}'
 
-choice_declaration = 'CHOICE' '[' parameter ']' '{' { choice_attribute } choice_attribute_default '}'
+choice_declaration = 'CHOICE' '[' id ']' '{' { choice_attribute } choice_attribute_default '}'
 choice_attribute = type '(' ( or_expression | 'DEFAULT' ) ')'
-choice_expression = ( or_expression | 'DEFAULT' )
 
-array_declaration = 'ARRAY' '[' parameter ']' '{' attribute { attribute }'}'
+array_declaration = 'ARRAY' '[' id ']' '{' attribute { attribute }'}'
 
-simple_type_declaration = simple_type '_' number
-
-parameters = '[' parameter { parameter } ']'
-parameter = ( id | number )
+arguments = '[' id { id } ']'
 attribute = id type
 
 type = ( simple_type | declared_type )
-simple_type = ( 'UINT' | 'BITSTRING' | 'BOOL' )
+simple_type = ( simple_type_parametrized | 'BOOL' )
+simple_type_parametrized = ( 'UINT', 'BITSTRING' ) [ '_' number ]
 declared_type = id [ parameters ]
+
+parameters = '[' parameter { parameter } ']'
+parameter = ( id | number )
 
 or_expression = and_expression { 'OR' and_expression }
 and_expression= simple_expression { 'AND' simple_expression }

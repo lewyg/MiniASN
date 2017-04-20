@@ -1,3 +1,4 @@
+from miniasn.ast.Arguments import Arguments
 from miniasn.ast.AndExpression import AndExpression
 from miniasn.ast.ArrayDeclaration import ArrayDeclaration
 from miniasn.ast.Attribute import Attribute
@@ -16,7 +17,7 @@ from miniasn.ast.RelationalOperator import RelationalOperator
 from miniasn.ast.SequenceDeclaration import SequenceDeclaration
 from miniasn.ast.SimpleExpression import SimpleExpression
 from miniasn.ast.SimpleType import SimpleType
-from miniasn.ast.SimpleTypeDeclaration import SimpleTypeDeclaration
+from miniasn.ast.SimpleTypeParametrized import SimpleTypeParametrized
 from miniasn.ast.Type import Type
 from miniasn.ast.Value import Value
 from miniasn.node.NodeType import NodeType
@@ -28,13 +29,14 @@ nodes = {
     NodeType.CHOICE_DECLARATION: ChoiceDeclaration,
     NodeType.CHOICE_ATTRIBUTE: ChoiceAttribute,
     NodeType.ARRAY_DECLARATION: ArrayDeclaration,
-    NodeType.SIMPLE_TYPE_DECLARATION: SimpleTypeDeclaration,
-    NodeType.PARAMETERS: Parameters,
-    NodeType.PARAMETER: Parameter,
+    NodeType.ARGUMENTS: Arguments,
     NodeType.ATTRIBUTE: Attribute,
     NodeType.TYPE: Type,
     NodeType.SIMPLE_TYPE: SimpleType,
+    NodeType.SIMPLE_TYPE_PARAMETRIZED: SimpleTypeParametrized,
     NodeType.DECLARED_TYPE: DeclaredType,
+    NodeType.PARAMETERS: Parameters,
+    NodeType.PARAMETER: Parameter,
     NodeType.OR_EXPRESSION: OrExpression,
     NodeType.AND_EXPRESSION: AndExpression,
     NodeType.SIMPLE_EXPRESSION: SimpleExpression,
