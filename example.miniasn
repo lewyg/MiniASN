@@ -11,10 +11,10 @@ b::=CHOICE[a]
 
 sss::= SEQUENCE[x] {
     a uint8
-    g b[x]
+    g b[a]
 }
 
 MojaSekwencjaSeq::= SEQUENCE {
     a uint8
-    g sss[as]
+    b sss[a]
 }

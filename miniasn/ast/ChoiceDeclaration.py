@@ -15,23 +15,20 @@ class ChoiceDeclaration(Node):
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.CHOICE)
 
-        parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
-        argument = parser.parse_node(NodeType.IDENTIFIER)
-        parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
+        arguments = parser.parse_node(NodeType.ARGUMENTS, required_arguments=1)
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 
-        attributes = [parser.parse_node(NodeType.CHOICE_ATTRIBUTE)]
-
-        while parser.can_parse(NodeType.CHOICE_ATTRIBUTE):
+        attributes = []
+        while True:
             attribute = parser.parse_node(NodeType.CHOICE_ATTRIBUTE)
             attributes.append(attribute)
-            if attribute.is_default():
+            if attribute.is_default() or not parser.can_parse(NodeType.CHOICE_ATTRIBUTE):
                 break
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
-        return ChoiceDeclaration(attributes, [argument])
+        return ChoiceDeclaration(attributes, arguments.arguments)
 
     def required_arguments(self):
         return 1

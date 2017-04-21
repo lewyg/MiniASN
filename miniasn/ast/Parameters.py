@@ -14,10 +14,12 @@ class Parameters(Node):
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
 
-        parameters = [parser.parse_node(NodeType.PARAMETER)]
-
-        while parser.can_parse(NodeType.PARAMETER):
+        parameters = []
+        while True:
             parameters.append(parser.parse_node(NodeType.PARAMETER))
+
+            if not parser.can_parse(NodeType.PARAMETER):
+                break
 
         parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
 

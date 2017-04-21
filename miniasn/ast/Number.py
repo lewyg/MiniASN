@@ -8,6 +8,7 @@ class Number(Node):
     def __init__(self, number):
         super().__init__()
         self.number = number
+        self.value = int(self.number.token_value)
 
     @staticmethod
     def parse(parser, *args, **kwargs):
@@ -15,8 +16,5 @@ class Number(Node):
 
         return Number(number)
 
-    def value(self):
-        return int(self.number.token_value)
-
     def __str__(self):
-        return str(self.value())
+        return str(self.value)

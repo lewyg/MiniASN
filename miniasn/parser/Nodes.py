@@ -1,3 +1,4 @@
+from miniasn.ast.Argument import Argument
 from miniasn.ast.Arguments import Arguments
 from miniasn.ast.AndExpression import AndExpression
 from miniasn.ast.ArrayDeclaration import ArrayDeclaration
@@ -30,6 +31,7 @@ nodes = {
     NodeType.CHOICE_ATTRIBUTE: ChoiceAttribute,
     NodeType.ARRAY_DECLARATION: ArrayDeclaration,
     NodeType.ARGUMENTS: Arguments,
+    NodeType.ARGUMENT: Argument,
     NodeType.ATTRIBUTE: Attribute,
     NodeType.TYPE: Type,
     NodeType.SIMPLE_TYPE: SimpleType,

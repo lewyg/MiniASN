@@ -1,3 +1,4 @@
+from miniasn.exceptions.ParserExceptions import NameInUseException
 from miniasn.node.Node import Node
 from miniasn.node.NodeType import NodeType
 from miniasn.token.TokenType import TokenType
@@ -15,20 +16,28 @@ class ArrayDeclaration(Node):
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.ARRAY)
 
-        parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
-        argument = parser.parse_node(NodeType.IDENTIFIER)
-        parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
+        arguments = parser.parse_node(NodeType.ARGUMENTS, required_arguments=1)
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 
-        attributes = [parser.parse_node(NodeType.ATTRIBUTE)]
+        attributes = []
+        while True:
+            attribute = parser.parse_node(NodeType.ATTRIBUTE)
+            attributes.append(attribute)
 
-        while parser.can_parse(NodeType.ATTRIBUTE):
-            attributes.append(parser.parse_node(NodeType.ATTRIBUTE))
+            if parser.get_local_name(attribute.identifier):
+                raise NameInUseException(attribute.identifier.identifier.line,
+                                         attribute.identifier.identifier.column,
+                                         attribute.identifier.value)
+
+            parser.local_names.append(attribute)
+
+            if not parser.can_parse(NodeType.ATTRIBUTE):
+                break
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
-        return ArrayDeclaration(attributes, [argument])
+        return ArrayDeclaration(attributes, arguments.arguments)
 
     def required_arguments(self):
         return 1

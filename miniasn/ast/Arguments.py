@@ -1,3 +1,4 @@
+from miniasn.exceptions.ParserExceptions import NameInUseException, ArgumentsLoadException
 from miniasn.node.Node import Node
 from miniasn.node.NodeType import NodeType
 from miniasn.token.TokenType import TokenType
@@ -11,13 +12,29 @@ class Arguments(Node):
         self.arguments = arguments
 
     @staticmethod
-    def parse(parser, *args, **kwargs):
+    def parse(parser, required_arguments=None, *args, **kwargs):
         parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
 
-        arguments = [parser.parse_node(NodeType.IDENTIFIER)]
+        arguments = []
+        while True:
+            argument = parser.parse_node(NodeType.ARGUMENT)
 
-        while parser.can_parse(NodeType.IDENTIFIER):
-            arguments.append(parser.parse_node(NodeType.IDENTIFIER))
+            if parser.get_local_name(argument):
+                raise NameInUseException(argument.identifier.identifier.line,
+                                         argument.identifier.identifier.column,
+                                         argument.identifier.value)
+            parser.local_names.append(argument)
+            arguments.append(argument)
+
+            if not parser.can_parse(NodeType.IDENTIFIER):
+                break
+
+        if required_arguments and len(arguments) != required_arguments:
+            raise ArgumentsLoadException(arguments[0].identifier.identifier.line,
+                                         arguments[0].identifier.identifier.column,
+                                         len(arguments),
+                                         required_arguments,
+                                         arguments[0].identifier.value)
 
         parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
 

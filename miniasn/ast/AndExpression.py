@@ -9,6 +9,7 @@ class AndExpression(Node):
     def __init__(self, simple_expressions):
         super().__init__()
         self.simple_expressions = simple_expressions
+        self.value = None
 
     @staticmethod
     def parse(parser, *args, **kwargs):

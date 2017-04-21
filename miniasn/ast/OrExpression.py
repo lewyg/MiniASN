@@ -9,6 +9,7 @@ class OrExpression(Node):
     def __init__(self, and_expressions):
         super().__init__()
         self.and_expressions = and_expressions
+        self.value = None
 
     @staticmethod
     def parse(parser, *args, **kwargs):

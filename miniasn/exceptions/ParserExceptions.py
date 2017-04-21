@@ -27,9 +27,23 @@ class NameInUseException(ParserException):
         super(NameInUseException, self).__init__(line, column, reason)
 
 
+class UnknownNameException(ParserException):
+    def __init__(self, line, column, name):
+        reason = 'Name {} is not defined'.format(name)
+        super(UnknownNameException, self).__init__(line, column, reason)
+
+
 class ParametersLoadException(ParserException):
     def __init__(self, line, column, loaded_parameters, required_parameters, declared_type_name):
         reason = '{} parameters loaded, but {} expected for type {}'.format(loaded_parameters,
-                                                                        required_parameters,
-                                                                        declared_type_name)
+                                                                            required_parameters,
+                                                                            declared_type_name)
         super(ParametersLoadException, self).__init__(line, column, reason)
+
+
+class ArgumentsLoadException(ParserException):
+    def __init__(self, line, column, loaded_arguments, required_arguments, declared_type_name):
+        reason = '{} arguments loaded, but {} expected for type {}'.format(loaded_arguments,
+                                                                           required_arguments,
+                                                                           declared_type_name)
+        super(ArgumentsLoadException, self).__init__(line, column, reason)

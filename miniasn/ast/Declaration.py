@@ -19,7 +19,7 @@ class Declaration(Node):
         if parser.get_declared_type(identifier):
             raise NameInUseException(identifier.identifier.line,
                                      identifier.identifier.column,
-                                     identifier.value())
+                                     identifier.value)
 
         parser.parse_node(TokenType.DECLARER)
 

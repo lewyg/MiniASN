@@ -7,6 +7,7 @@ from miniasn.token.TokenType import TokenType
 class Parser:
     __nodes = Nodes.nodes
     declared_types = []
+    local_names = []
 
     def __init__(self, lexer):
         self.__lexer = lexer
@@ -56,8 +57,15 @@ class Parser:
 
     def get_declared_type(self, identifier):
         for declared_type in self.declared_types:
-            if declared_type.identifier.value() == identifier.value():
+            if declared_type.identifier.value == identifier.value:
                 return declared_type
+
+        return None
+
+    def get_local_name(self, identifier):
+        for local_name in self.local_names:
+            if local_name.identifier.value == identifier.value:
+                return local_name
 
         return None
 

@@ -8,6 +8,7 @@ class Identifier(Node):
     def __init__(self, identifier):
         super().__init__()
         self.identifier = identifier
+        self.value = self.identifier.token_value
 
     @staticmethod
     def parse(parser, *args, **kwargs):
@@ -15,8 +16,5 @@ class Identifier(Node):
 
         return Identifier(identifier)
 
-    def value(self):
-        return self.identifier.token_value
-
     def __str__(self):
-        return self.value()
+        return self.value
