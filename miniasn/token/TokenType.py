@@ -8,8 +8,8 @@ class TokenType(Enum):
     LESS = '<'
     GREATER_OR_EQUAL = '>='
     LESS_OR_EQUAL = '<='
-    ASSIGN = '::='
-    PARAMETRIZE = '_'
+    DECLARER = '::='
+    PARAMETERIZER = '_'
 
     LEFT_BRACKET = '('
     RIGHT_BRACKET = ')'
@@ -18,7 +18,7 @@ class TokenType(Enum):
     CLIP_LEFT_BRACKET = '{'
     CLIP_RIGHT_BRACKET = '}'
 
-    UNIT = 'UINT'
+    UINT = 'UINT'
     BITSTRING = 'BITSTRING'
     BOOL = 'BOOL'
     ARRAY = 'ARRAY'
@@ -34,3 +34,5 @@ class TokenType(Enum):
 
     NUMBER_LITERAL = '123'
     IDENTIFIER = 'ID'
+
+    END_OF_FILE = ''

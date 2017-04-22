@@ -17,4 +17,4 @@ class TokenTest(TestCase):
     def test_repr(self):
         token = Token(TokenType.IDENTIFIER, 'id', 0, 0)
 
-        self.assertEqual(str(token), 'IDENTIFIER               -\t id')
+        self.assertEqual(str(token), 'id')

@@ -1,0 +1,34 @@
+data_structure = { declaration }
+declaration = id '::=' ( sequence_declaration | choice_declaration | array_declaration | simple_type )
+
+sequence_declaration = 'SEQUENCE' [ arguments ] '{' attribute { attribute } '}'
+
+choice_declaration = 'CHOICE' '[' id ']' '{' { choice_attribute } choice_attribute_default '}'
+choice_attribute = type '(' ( or_expression | 'DEFAULT' ) ')'
+
+array_declaration = 'ARRAY' '[' id ']' '{' attribute { attribute }'}'
+
+arguments = '[' id { id } ']'
+attribute = id type
+
+type = ( simple_type | declared_type )
+simple_type = ( simple_type_parametrized | 'BOOL' )
+simple_type_parametrized = ( 'UINT', 'BITSTRING' ) [ '_' number ]
+declared_type = id [ parameters ]
+
+parameters = '[' parameter { parameter } ']'
+parameter = ( id | number )
+
+or_expression = and_expression { 'OR' and_expression }
+and_expression= simple_expression { 'AND' simple_expression }
+simple_expression = id relational_operator value
+relational_operator = ( '==' | '!=' | '<' | '>' | '<=' | '>=' )
+
+value = ( number | boolean )
+number = ( digit )
+digit = '0'..'9'
+boolean = ( 'TRUE' | 'FALSE' )
+
+id = letter { ( letter | digit ) }
+letter = ( 'a'..'z' | 'A'..'Z' )
+
