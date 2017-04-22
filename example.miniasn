@@ -9,12 +9,18 @@ b::=CHOICE[a]
     BITSTRING(DEFAULT)
 }
 
-sss::= SEQUENCE[x] {
-    a uint8
+arr::=ARRAY[g]
+{
+    arr b[g]
+    c b[3]
+}
+
+sss::= SEQUENCE[x f e] {
+    a UINT_9
     g b[a]
 }
 
 MojaSekwencjaSeq::= SEQUENCE {
     a uint8
-    b sss[a]
+    b sss[a 1 1]
 }

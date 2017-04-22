@@ -18,16 +18,25 @@ class Parser:
 
         return root
 
+    def parse_node(self, node_type, *args, **kwargs):
+        if node_type in NodeType:
+            type = self.__nodes[node_type]
+            node = type.parse(self, *args, **kwargs)
+        else:
+            node = self.__parse_token(node_type)
+
+        return node
+
     def parse_or_node_list(self, or_list, *args, **kwargs):
         for node_type in or_list:
             if self.can_parse(node_type):
                 return self.parse_node(node_type, *args, **kwargs)
 
         token = self.__get_token()
-        raise UnexpectedTokenException(token.line,
-                                       token.column,
-                                       token.token_type,
-                                       [node.name for node in or_list])
+        raise UnexpectedTokenException(token.line, token.column, token.token_type, self.get_first(or_list))
+
+    def end_of_file(self):
+        return self.__get_token().token_type == TokenType.END_OF_FILE
 
     def can_parse(self, node):
         if node in TokenType:
@@ -43,29 +52,20 @@ class Parser:
 
         return False
 
-    def parse_node(self, node_type, *args, **kwargs):
-        if node_type in NodeType:
-            type = self.__nodes[node_type]
-            node = type.parse(self, *args, **kwargs)
-        else:
-            node = self.__parse_token(node_type)
+    def get_first(self, node):
+        if node in TokenType:
+            return node.name
 
-        return node
+        if node in NodeType:
+            type = self.__nodes[node]
+            return self.get_first(type.first)
 
-    def end_of_file(self):
-        return self.__get_token().token_type == TokenType.END_OF_FILE
+        return [self.get_first(node_type) for node_type in node]
 
-    def get_declared_type(self, identifier):
-        for declared_type in self.declared_types:
-            if declared_type.identifier.value == identifier.value:
-                return declared_type
-
-        return None
-
-    def get_local_name(self, identifier):
-        for local_name in self.local_names:
-            if local_name.identifier.value == identifier.value:
-                return local_name
+    def check_if_name_exists(self, names, identifier):
+        for name in names:
+            if name.identifier.value == identifier.value:
+                return name
 
         return None
 
@@ -74,10 +74,7 @@ class Parser:
         if self.__check_token_type(token_type):
             self.__advance()
         else:
-            raise UnexpectedTokenException(token.line,
-                                           token.column,
-                                           token.token_type,
-                                           token_type)
+            raise UnexpectedTokenException(token.line, token.column, token.token_type, token_type)
 
         return token
 

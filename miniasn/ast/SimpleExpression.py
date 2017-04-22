@@ -16,7 +16,7 @@ class SimpleExpression(Node):
     @staticmethod
     def parse(parser, *args, **kwargs):
         left_operand = parser.parse_node(NodeType.IDENTIFIER)
-        left_operand_definition = parser.get_local_name(left_operand)
+        left_operand_definition = parser.check_if_name_exists(parser.local_names, left_operand)
         if not left_operand_definition:
             raise UnknownNameException(left_operand.identifier.line,
                                        left_operand.identifier.column,

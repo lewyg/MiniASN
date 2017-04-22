@@ -16,7 +16,7 @@ class Declaration(Node):
     def parse(parser, *args, **kwargs):
         identifier = parser.parse_node(NodeType.IDENTIFIER)
 
-        if parser.get_declared_type(identifier):
+        if parser.check_if_name_exists(parser.declared_types, identifier):
             raise NameInUseException(identifier.identifier.line,
                                      identifier.identifier.column,
                                      identifier.value)

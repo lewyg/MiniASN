@@ -25,7 +25,7 @@ class SequenceDeclaration(Node):
             attribute = parser.parse_node(NodeType.ATTRIBUTE)
             attributes.append(attribute)
 
-            if parser.get_local_name(attribute.identifier):
+            if parser.check_if_name_exists(parser.local_names, attribute.identifier):
                 raise NameInUseException(attribute.identifier.identifier.line,
                                          attribute.identifier.identifier.column,
                                          attribute.identifier.value)

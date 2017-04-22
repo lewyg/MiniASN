@@ -19,7 +19,7 @@ class Arguments(Node):
         while True:
             argument = parser.parse_node(NodeType.ARGUMENT)
 
-            if parser.get_local_name(argument):
+            if parser.check_if_name_exists(parser.local_names, argument):
                 raise NameInUseException(argument.identifier.identifier.line,
                                          argument.identifier.identifier.column,
                                          argument.identifier.value)
@@ -33,8 +33,7 @@ class Arguments(Node):
             raise ArgumentsLoadException(arguments[0].identifier.identifier.line,
                                          arguments[0].identifier.identifier.column,
                                          len(arguments),
-                                         required_arguments,
-                                         arguments[0].identifier.value)
+                                         required_arguments)
 
         parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
 

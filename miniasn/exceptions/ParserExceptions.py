@@ -42,7 +42,7 @@ class ParametersLoadException(ParserException):
 
 
 class ArgumentsLoadException(ParserException):
-    def __init__(self, line, column, loaded_arguments, required_arguments, declared_type_name):
+    def __init__(self, line, column, loaded_arguments, required_arguments, declared_type_name=''):
         reason = '{} arguments loaded, but {} expected for type {}'.format(loaded_arguments,
                                                                            required_arguments,
                                                                            declared_type_name)

@@ -4,8 +4,7 @@ from miniasn.token.TokenType import TokenType
 
 
 class SimpleType(Node):
-    first = [TokenType.UINT,
-             TokenType.BITSTRING,
+    first = [NodeType.SIMPLE_TYPE_PARAMETRIZED,
              TokenType.BOOL]
 
     def __init__(self, type):

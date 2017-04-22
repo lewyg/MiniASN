@@ -19,7 +19,7 @@ class Parameter(Node):
         if type(parameter.value) == int:
             return Parameter(parameter, parameter.value)
 
-        parameter_definition = parser.get_local_name(parameter)
+        parameter_definition = parser.check_if_name_exists(parser.local_names, parameter)
         if not parameter_definition:
             raise UnknownNameException(parameter.identifier.line,
                                        parameter.identifier.column,

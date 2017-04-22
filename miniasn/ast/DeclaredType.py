@@ -16,7 +16,7 @@ class DeclaredType(Node):
     def parse(parser, *args, **kwargs):
         type_name = parser.parse_node(NodeType.IDENTIFIER)
 
-        declaration = parser.get_declared_type(type_name)
+        declaration = parser.check_if_name_exists(parser.declared_types, type_name)
 
         if not declaration:
             raise NotDeclaredTypeException(type_name.identifier.line,
