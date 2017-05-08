@@ -69,10 +69,10 @@ class Lexer:
         if next_char.isspace():
             return
 
-        if token_descriptor.required_space and self.__next_token_required_space(next_char):
+        if token_descriptor.required_space and self.__does_next_token_require_space(next_char):
             raise RequiredSpaceException(self.__file_reader.current_line, self.__file_reader.current_column,
                                          '{}({})'.format(word, token_descriptor.token_name))
 
-    def __next_token_required_space(self, next_char):
+    def __does_next_token_require_space(self, next_char):
         return bool([token_desc for token_desc in self.__descriptors_required_space
                      if token_desc.qualifier(next_char, 0, token_desc.token_value)])

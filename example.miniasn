@@ -9,13 +9,13 @@ b::=CHOICE[a]
     BITSTRING(DEFAULT)
 }
 
-arr::=ARRAY[g]
+arr::=ARRAY[g s]
 {
     arr b[g]
     c b[3]
 }
 
-sss::= SEQUENCE[x f e] {
+sss::= SEQUENCE[x f e ff] {
     a UINT_9
     g b[a]
 }

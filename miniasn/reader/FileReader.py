@@ -1,12 +1,9 @@
-BITS_IN_BYTE = 8
 UTF_8 = 'utf-8'
 
 
 class FileReader:
     def __init__(self, filename):
         self.__file = self.__open_file(filename)
-        self.__last_byte = []
-        self.__bits_counter = 0
         self.__current_line = 1
         self.__current_column = 1
 
@@ -50,21 +47,3 @@ class FileReader:
 
     def __byte_to_char(self, byte):
         return str(byte, UTF_8)
-
-    def read_bit(self):
-        if not self.__last_byte or self.__bits_counter == BITS_IN_BYTE:
-            byte = self.__file.read(1)
-            if not byte:
-                return None
-            self.__last_byte = self.__get_bits_from_byte(byte)
-            self.__bits_counter = 0
-
-        bit = self.__last_byte[self.__bits_counter]
-        self.__bits_counter += 1
-
-        return bit
-
-    def __get_bits_from_byte(self, byte):
-        byte = ord(byte)
-
-        return [(byte >> i) & 1 for i in range(BITS_IN_BYTE)][::-1]

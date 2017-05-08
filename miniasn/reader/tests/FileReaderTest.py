@@ -54,26 +54,3 @@ class FileReaderTest(TestCase):
         preview_char = file_reader.preview_next_char()
 
         self.assertEqual(preview_char, '')
-
-    def test_read_bit(self):
-        file_reader = FileReader(resource_path + 'one_char_file')
-        bit = file_reader.read_bit()
-
-        self.assertEqual(bit, 0)
-
-    def test_read_bit_when_end_of_file(self):
-        file_reader = FileReader(resource_path + 'empty_file')
-        bit = file_reader.read_bit()
-
-        self.assertEqual(bit, None)
-
-    def test_read_bits_whole_byte(self):
-        file_reader = FileReader(resource_path + 'one_char_file')
-        bit = file_reader.read_bit()
-        byte = []
-        while bit is not None:
-            byte.append(bit)
-            bit = file_reader.read_bit()
-
-        # 01100001 = 97(a)
-        self.assertEqual(byte, [0, 1, 1, 0, 0, 0, 0, 1])

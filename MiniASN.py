@@ -14,7 +14,7 @@ def main():
 
         print(tree)
     except Exception as ex:
-        print(traceback.format_exc())
+        print(ex)
 
 
 if __name__ == "__main__":
