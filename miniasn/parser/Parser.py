@@ -9,8 +9,9 @@ class Parser:
     declared_types = []
     local_names = []
 
-    def __init__(self, lexer):
+    def __init__(self, lexer, nodes=__nodes):
         self.__lexer = lexer
+        self.__nodes = nodes
 
     def parse(self):
         self.__advance()

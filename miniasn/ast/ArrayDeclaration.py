@@ -16,7 +16,7 @@ class ArrayDeclaration(Node):
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.ARRAY)
 
-        arguments = parser.parse_node(NodeType.ARGUMENTS, required_arguments=1)
+        arguments = parser.parse_node(NodeType.ARGUMENTS, required_arguments=1, type_name='ARRAY')
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 

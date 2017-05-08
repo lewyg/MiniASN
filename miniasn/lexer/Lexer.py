@@ -7,10 +7,11 @@ from miniasn.token.TokenType import TokenType
 class Lexer:
     __descriptors = Descriptors.descriptors
 
-    def __init__(self, file_reader):
+    def __init__(self, file_reader, descriptors=__descriptors):
         self.__file_reader = file_reader
         self.__descriptors_required_space = [token_descriptor for token_descriptor in self.__descriptors
                                              if token_descriptor.required_space]
+        self.__descriptors = descriptors
         self.__token = None
 
     def get_token(self):

@@ -12,7 +12,7 @@ class Arguments(Node):
         self.arguments = arguments
 
     @staticmethod
-    def parse(parser, required_arguments=None, *args, **kwargs):
+    def parse(parser, required_arguments=None, type_name='', *args, **kwargs):
         parser.parse_node(TokenType.SQUARE_LEFT_BRACKET)
 
         arguments = []
@@ -33,7 +33,8 @@ class Arguments(Node):
             raise ArgumentsLoadException(arguments[0].identifier.identifier.line,
                                          arguments[0].identifier.identifier.column,
                                          len(arguments),
-                                         required_arguments)
+                                         required_arguments,
+                                         type_name)
 
         parser.parse_node(TokenType.SQUARE_RIGHT_BRACKET)
 

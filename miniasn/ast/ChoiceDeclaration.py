@@ -15,7 +15,7 @@ class ChoiceDeclaration(Node):
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.CHOICE)
 
-        arguments = parser.parse_node(NodeType.ARGUMENTS, required_arguments=1)
+        arguments = parser.parse_node(NodeType.ARGUMENTS, required_arguments=1, type_name='CHOICE')
 
         parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 
