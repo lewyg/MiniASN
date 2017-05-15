@@ -2,8 +2,8 @@ BITS_IN_BYTE = 8
 
 
 class ByteReader:
-    def __init__(self, filename):
-        self.__file = self.__open_file(filename)
+    def __init__(self, file):
+        self.__file = file
         self.__last_byte = []
         self.__bits_counter = 0
 
@@ -12,9 +12,6 @@ class ByteReader:
             self.__file.close()
         except AttributeError:
             pass
-
-    def __open_file(self, filename):
-        return open(filename, 'rb')
 
     def read_byte(self):
         byte = self.__file.read(1)

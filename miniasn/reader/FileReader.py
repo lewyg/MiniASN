@@ -2,8 +2,8 @@ UTF_8 = 'utf-8'
 
 
 class FileReader:
-    def __init__(self, filename):
-        self.__file = self.__open_file(filename)
+    def __init__(self, file):
+        self.__file = file
         self.__current_line = 1
         self.__current_column = 1
 
@@ -21,12 +21,8 @@ class FileReader:
     def current_column(self):
         return self.__current_column
 
-    def __open_file(self, filename):
-        return open(filename, 'rb')
-
     def read_char(self):
-        byte = self.__file.read(1)
-        char = self.__byte_to_char(byte)
+        char = self.__file.read(1)
         self.__update_current_position(char)
 
         return char
@@ -40,10 +36,8 @@ class FileReader:
 
     def preview_next_char(self):
         position = self.__file.tell()
-        byte = self.__file.read(1)
+        char = self.__file.read(1)
         self.__file.seek(position)
 
-        return self.__byte_to_char(byte)
+        return char
 
-    def __byte_to_char(self, byte):
-        return str(byte, UTF_8)

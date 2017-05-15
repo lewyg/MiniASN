@@ -7,7 +7,7 @@ from miniasn.reader.FileReader import FileReader
 
 def main():
     try:
-        file_reader = FileReader('example.miniasn')
+        file_reader = FileReader(open('example.miniasn', 'r'))
         lexer = Lexer(file_reader)
         p = Parser(lexer)
         tree = p.parse()
