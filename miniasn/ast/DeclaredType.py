@@ -30,8 +30,8 @@ class DeclaredType(Node):
         loaded_parameters = len(parameters.parameters) if parameters is not None else 0
 
         if loaded_parameters != required_parameters:
-            raise ParametersLoadException(type_name.identifier.line,
-                                          type_name.identifier.column,
+            raise ParametersLoadException(parameters.parameters[0].parameter.identifier.line,
+                                          parameters.parameters[0].parameter.identifier.column,
                                           loaded_parameters,
                                           required_parameters,
                                           type_name.value)

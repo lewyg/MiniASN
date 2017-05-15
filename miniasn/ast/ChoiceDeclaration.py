@@ -1,3 +1,4 @@
+from miniasn.exceptions.ParserExceptions import ParserException
 from miniasn.node.Node import Node
 from miniasn.node.NodeType import NodeType
 from miniasn.token.TokenType import TokenType
@@ -15,9 +16,9 @@ class ChoiceDeclaration(Node):
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.CHOICE)
 
-        arguments = parser.parse_node(NodeType.ARGUMENTS, required_arguments=1)
+        arguments = parser.parse_node(NodeType.ARGUMENTS, required_arguments=1, type_name='CHOICE')
 
-        parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
+        bracket = parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 
         attributes = []
         while True:
@@ -25,6 +26,9 @@ class ChoiceDeclaration(Node):
             attributes.append(attribute)
             if attribute.is_default() or not parser.can_parse(NodeType.CHOICE_ATTRIBUTE):
                 break
+
+        if not attribute.is_default():
+            raise ParserException(bracket.line, bracket.column, "Last choice attribute must be DEFAULT")
 
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 

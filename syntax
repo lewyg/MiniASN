@@ -3,10 +3,10 @@ declaration = id '::=' ( sequence_declaration | choice_declaration | array_decla
 
 sequence_declaration = 'SEQUENCE' [ arguments ] '{' attribute { attribute } '}'
 
-choice_declaration = 'CHOICE' '[' id ']' '{' { choice_attribute } choice_attribute_default '}'
+choice_declaration = 'CHOICE' arguments '{' { choice_attribute } choice_attribute_default '}'
 choice_attribute = type '(' ( or_expression | 'DEFAULT' ) ')'
 
-array_declaration = 'ARRAY' '[' id ']' '{' attribute { attribute }'}'
+array_declaration = 'ARRAY' arguments '{' attribute { attribute }'}'
 
 arguments = '[' id { id } ']'
 attribute = id type
