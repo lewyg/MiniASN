@@ -6,12 +6,12 @@ from miniasn.token.TokenType import TokenType
 
 class Parser:
     __nodes = Nodes.nodes
-    declared_types = []
-    local_names = []
 
     def __init__(self, lexer, nodes=__nodes):
         self.__lexer = lexer
         self.__nodes = nodes
+        self.declared_types = []
+        self.local_names = []
 
     def parse(self):
         self.__advance()
