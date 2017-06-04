@@ -30,5 +30,8 @@ class Declaration(Node):
 
         return Declaration(identifier, declaration)
 
+    def read_value(self, reader, *args, **kwargs):
+        return "{}".format(self.declaration.read_value(reader, *args, **kwargs))
+
     def __str__(self):
         return '{} ::= {}'.format(self.identifier, self.declaration)

@@ -1,5 +1,7 @@
 import io
+
 from unittest import TestCase
+
 from miniasn.reader.FileReader import FileReader
 
 

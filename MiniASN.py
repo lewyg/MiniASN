@@ -1,28 +1,27 @@
-import traceback
-
-import io
+import sys
 
 from miniasn.lexer.Lexer import Lexer
 from miniasn.parser.Parser import Parser
+from miniasn.reader.ByteReader import ByteReader
 from miniasn.reader.FileReader import FileReader
 
 
-def main():
+def main(args):
     try:
-        file_reader = FileReader(io.StringIO(
-            """seq::= SEQUENCE[a b c] {
-    d UINT_9
-    e BOOL
-}"""
-        ))
+        if (len(args)) < 3:
+            print("Missing arguments!{}".format(len(args)))
+            return
+
+        file_reader = FileReader(open(args[0]))
         lexer = Lexer(file_reader)
         p = Parser(lexer)
         tree = p.parse()
 
-        print(tree)
-    except Exception as ex:
-        print(ex)
+        reader = ByteReader(open(args[1]))
+        print(tree.read_value(reader, args[2], arguments=args[3:]))
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

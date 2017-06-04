@@ -1,4 +1,5 @@
 from miniasn.exceptions.ParserExceptions import NameInUseException
+from miniasn.exceptions.ReaderException import ArgumentsNumberException
 from miniasn.node.Node import Node
 from miniasn.node.NodeType import NodeType
 from miniasn.token.TokenType import TokenType
@@ -38,6 +39,27 @@ class SequenceDeclaration(Node):
         parser.parse_node(TokenType.CLIP_RIGHT_BRACKET)
 
         return SequenceDeclaration(attributes, arguments.arguments if arguments else [])
+
+    def read_value(self, reader, arguments, *args, **kwargs):
+        if len(arguments) > len(self.arguments):
+            raise ArgumentsNumberException("SEQUENCE", self.required_arguments(), len(arguments))
+
+        arguments = arguments
+
+        result = ''
+        i = 0
+        for argument in arguments:
+            self.arguments[i].value = argument
+            i += 1
+
+        result += "{"
+        for attribute in self.attributes:
+            result += "\n  "
+            result += attribute.read_value(reader, *args, **kwargs).replace('\n', '\n    ')
+            result += ","
+        result += "\n}"
+
+        return result
 
     def required_arguments(self):
         return len(self.arguments) if self.arguments else 0

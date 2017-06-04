@@ -11,6 +11,16 @@ class AndExpression(Node):
         self.simple_expressions = simple_expressions
         self.value = None
 
+    def get_value(self):
+        self.value = True
+
+        for expression in self.simple_expressions:
+            if not expression.get_value():
+                self.value = False
+                break
+
+        return self.value
+
     @staticmethod
     def parse(parser, *args, **kwargs):
         simple_expressions = [parser.parse_node(NodeType.SIMPLE_EXPRESSION)]

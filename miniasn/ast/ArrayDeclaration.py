@@ -1,4 +1,5 @@
 from miniasn.exceptions.ParserExceptions import NameInUseException
+from miniasn.exceptions.ReaderException import ArgumentsNumberException, ArgumentTypeException
 from miniasn.node.Node import Node
 from miniasn.node.NodeType import NodeType
 from miniasn.token.TokenType import TokenType
@@ -41,6 +42,32 @@ class ArrayDeclaration(Node):
 
     def required_arguments(self):
         return 1
+
+    def read_value(self, reader, arguments, *args, **kwargs):
+        if len(arguments) > 1:
+            raise ArgumentsNumberException("ARRAY", self.required_arguments(), len(arguments))
+
+        argument = arguments[0]
+
+        try:
+            if type(argument) is not int:
+                argument = int(argument)
+        except:
+            raise ArgumentTypeException(int, type(argument))
+
+        self.arguments[0].value = argument
+
+        result = "["
+        for i in range(argument):
+            result += "\n {"
+            for attribute in self.attributes:
+                result += "\n  "
+                result += attribute.read_value(reader, *args, **kwargs).replace('\n', '\n    ')
+                result += ","
+            result += "\n },"
+        result += "\n]"
+
+        return result
 
     def __str__(self):
         return 'ARRAY[{}]\n\t{}'.format(self.arguments[0],

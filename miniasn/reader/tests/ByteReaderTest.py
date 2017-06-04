@@ -1,7 +1,9 @@
 import io
+
 import os
 from unittest import TestCase
 
+from miniasn.exceptions.ReaderException import EndOfBytesException
 from miniasn.reader.ByteReader import ByteReader
 
 resource_path = os.path.dirname(os.path.abspath(__file__)) + '/res/'
@@ -26,9 +28,8 @@ class ByteReaderTest(TestCase):
 
     def test_read_byte_when_end_of_file(self):
         file_reader = ByteReader(io.BytesIO(b''))
-        byte = file_reader.read_byte()
 
-        self.assertEqual(byte, b'')
+        self.assertRaises(EndOfBytesException, file_reader.read_byte)
 
     def test_read_bit(self):
         file_reader = ByteReader(io.BytesIO(b'a'))
@@ -38,15 +39,14 @@ class ByteReaderTest(TestCase):
 
     def test_read_bit_when_end_of_file(self):
         file_reader = ByteReader(io.BytesIO(b''))
-        bit = file_reader.read_bit()
 
-        self.assertEqual(bit, None)
+        self.assertRaises(EndOfBytesException, file_reader.read_bit)
 
     def test_read_bits_whole_byte(self):
-        file_reader = ByteReader(io.BytesIO(b'a'))
+        file_reader = ByteReader(io.BytesIO(b'ab'))
         bit = file_reader.read_bit()
         byte = []
-        while bit is not None:
+        while bit is not None and len(byte) < 8:
             byte.append(bit)
             bit = file_reader.read_bit()
 

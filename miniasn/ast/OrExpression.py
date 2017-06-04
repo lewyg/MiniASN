@@ -11,6 +11,16 @@ class OrExpression(Node):
         self.and_expressions = and_expressions
         self.value = None
 
+    def get_value(self):
+        self.value = False
+
+        for expression in self.and_expressions:
+            if expression.get_value():
+                self.value = True
+                break
+
+        return self.value
+
     @staticmethod
     def parse(parser, *args, **kwargs):
         and_expressions = [parser.parse_node(NodeType.AND_EXPRESSION)]

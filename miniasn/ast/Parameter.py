@@ -12,19 +12,28 @@ class Parameter(Node):
         self.parameter = parameter
         self.value = value
 
+    def get_value(self):
+        return self.value()
+
     @staticmethod
     def parse(parser, *args, **kwargs):
         parameter = parser.parse_or_node_list([NodeType.IDENTIFIER,
                                                NodeType.NUMBER])
         if type(parameter.value) == int:
-            return Parameter(parameter, parameter.value)
+            return Parameter(parameter, parameter.get_value)
 
         parameter_definition = parser.check_if_name_exists(parser.local_names, parameter)
         if not parameter_definition:
             raise UnknownNameException(parameter.identifier.line,
                                        parameter.identifier.column,
                                        parameter.value)
-        return Parameter(parameter, parameter_definition.value)
+        return Parameter(parameter, parameter_definition.get_value)
+
+    def read_value(self, reader, *args, **kwargs):
+        return self.value(reader, *args, **kwargs)
 
     def __str__(self):
-        return str(self.parameter.value)
+        if self.get_value():
+            return str(self.get_value())
+        else:
+            return str(self.parameter)
