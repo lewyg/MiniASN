@@ -10,6 +10,9 @@ class Number(Node):
         self.number = number
         self.value = int(self.number.token_value)
 
+    def get_value(self):
+        return self.value
+
     @staticmethod
     def parse(parser, *args, **kwargs):
         number = parser.parse_node(TokenType.NUMBER_LITERAL)

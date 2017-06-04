@@ -26,5 +26,15 @@ class ChoiceAttribute(Node):
     def is_default(self):
         return type(self.expression) is Token and self.expression.token_type == TokenType.DEFAULT
 
+    def check_if_true(self):
+        if self.is_default():
+            return True
+
+        return self.expression.get_value()
+
+    def read_value(self, reader, *args, **kwargs):
+        value = self.type.read_value(reader, *args, **kwargs)
+        return "({}) {}".format(str(self.type), value)
+
     def __str__(self):
         return '{}({})'.format(self.type, self.expression)

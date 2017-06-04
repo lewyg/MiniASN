@@ -1,6 +1,6 @@
+from miniasn.exceptions.LexerExceptions import UndefinedSymbolException, RequiredSpaceException
 from miniasn.lexer import Descriptors
 from miniasn.token.Token import Token
-from miniasn.exceptions.LexerExceptions import UndefinedSymbolException, RequiredSpaceException
 from miniasn.token.TokenType import TokenType
 
 

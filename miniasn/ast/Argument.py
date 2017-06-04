@@ -10,6 +10,9 @@ class Argument(Node):
         self.identifier = identifier
         self.value = None
 
+    def get_value(self):
+        return self.value
+
     @staticmethod
     def parse(parser, *args, **kwargs):
         identifier = parser.parse_node(NodeType.IDENTIFIER)

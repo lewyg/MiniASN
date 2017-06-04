@@ -11,6 +11,9 @@ class Boolean(Node):
         self.bool = bool
         self.value = self.bool.token_type == TokenType.TRUE
 
+    def get_value(self):
+        return self.value
+
     @staticmethod
     def parse(parser, *args, **kwargs):
         boolean = parser.parse_or_node_list([TokenType.TRUE,

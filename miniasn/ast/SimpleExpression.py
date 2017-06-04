@@ -1,6 +1,7 @@
 from miniasn.exceptions.ParserExceptions import UnknownNameException
 from miniasn.node.Node import Node
 from miniasn.node.NodeType import NodeType
+from miniasn.token.TokenType import TokenType
 
 
 class SimpleExpression(Node):
@@ -12,6 +13,28 @@ class SimpleExpression(Node):
         self.operator = operator
         self.right_operand = right_operand
         self.value = None
+
+    def get_value(self):
+        left_value = str(self.left_operand.get_value()).upper()
+        operator_type = self.operator.operator.token_type
+        right_value = str(self.right_operand).upper()
+        if operator_type == TokenType.EQUAL:
+            self.value = left_value == right_value
+        elif operator_type == TokenType.NOT_EQUAL:
+            self.value = left_value != right_value
+        elif left_value.isdigit() and right_value.isdigit():
+            if operator_type == TokenType.GREATER:
+                self.value = int(left_value) > int(right_value)
+            elif operator_type == TokenType.LESS:
+                self.value = int(left_value) < int(right_value)
+            elif operator_type == TokenType.GREATER_OR_EQUAL:
+                self.value = int(left_value) >= int(right_value)
+            elif operator_type == TokenType.LESS_OR_EQUAL:
+                self.value = int(left_value) <= int(right_value)
+        else:
+            self.value = False
+
+        return self.value
 
     @staticmethod
     def parse(parser, *args, **kwargs):

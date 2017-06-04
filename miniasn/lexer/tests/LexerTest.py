@@ -1,4 +1,5 @@
 import io
+
 from unittest import TestCase
 
 from miniasn.exceptions.LexerExceptions import RequiredSpaceException, UndefinedSymbolException

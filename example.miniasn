@@ -1,26 +1,48 @@
 bit16 ::= BITSTRING_16
 uint8 ::= UINT_8
 
-b::=CHOICE[a]
+testChoice::=CHOICE[a]
 {
     UINT(a>0 AND a < 100)
-    BOOL(a == 0)
+    BOOL(a > 170 AND a < 200)
     bit16(a == 100 OR a == 110)
+	uint8(a > 202)
     BITSTRING(DEFAULT)
 }
 
-arr::=ARRAY[g]
+intArray::=ARRAY[a]
 {
-    arr b[g]
-    c b[3]
+    number UINT
 }
 
-sss::= SEQUENCE[x f e] {
-    a UINT_9
-    g b[a]
+testArray::=ARRAY[a]
+{
+    param uint8
+    choice testChoice[param]
+    array intArray[3]
 }
 
-MojaSekwencjaSeq::= SEQUENCE {
-    a uint8
-    b sss[a 1 1]
+littleSeq::=SEQUENCE[a b]
+{
+    check BOOL
+    nums intArray[a]
+    nums2 intArray[b]
+}
+
+mediumSeq::= SEQUENCE[a b c] {
+    int9 UINT_9
+    array testArray[c]
+    seq littleSeq[b a]
+}
+
+bigSeq::= SEQUENCE[a b] {
+    uint uint8
+    mSeq mediumSeq[a 1 b]
+    array testArray[b]
+}
+
+arrSeq::= ARRAY[a]
+{
+	param UINT_5
+	seq littleSeq[param param]
 }

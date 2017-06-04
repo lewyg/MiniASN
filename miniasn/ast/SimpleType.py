@@ -1,5 +1,7 @@
+from miniasn.encoder import Encoder
 from miniasn.node.Node import Node
 from miniasn.node.NodeType import NodeType
+from miniasn.token.Token import Token
 from miniasn.token.TokenType import TokenType
 
 
@@ -20,6 +22,12 @@ class SimpleType(Node):
 
     def required_arguments(self):
         return 0
+
+    def read_value(self, reader, *args, **kwargs):
+        if type(self.type) is not Token:
+            return self.type.read_value(reader, *args, **kwargs)
+        else:
+            return Encoder.encode_bool(reader)
 
     def __str__(self):
         return str(self.type)

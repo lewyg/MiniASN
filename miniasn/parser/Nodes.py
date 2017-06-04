@@ -1,6 +1,6 @@
+from miniasn.ast.AndExpression import AndExpression
 from miniasn.ast.Argument import Argument
 from miniasn.ast.Arguments import Arguments
-from miniasn.ast.AndExpression import AndExpression
 from miniasn.ast.ArrayDeclaration import ArrayDeclaration
 from miniasn.ast.Attribute import Attribute
 from miniasn.ast.Boolean import Boolean

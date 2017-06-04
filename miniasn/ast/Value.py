@@ -10,6 +10,9 @@ class Value(Node):
         super().__init__()
         self.value = value.value
 
+    def get_value(self):
+        return self.value
+
     @staticmethod
     def parse(parser, *args, **kwargs):
         value = parser.parse_or_node_list([NodeType.NUMBER,

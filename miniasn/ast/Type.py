@@ -17,5 +17,8 @@ class Type(Node):
 
         return Type(type)
 
+    def read_value(self, reader, *args, **kwargs):
+        return self.type.read_value(reader, *args, **kwargs)
+
     def __str__(self):
         return str(self.type)

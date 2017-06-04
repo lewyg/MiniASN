@@ -1,4 +1,5 @@
 from miniasn.exceptions.ParserExceptions import ParserException
+from miniasn.exceptions.ReaderException import ArgumentsNumberException
 from miniasn.node.Node import Node
 from miniasn.node.NodeType import NodeType
 from miniasn.token.TokenType import TokenType
@@ -16,7 +17,7 @@ class ChoiceDeclaration(Node):
     def parse(parser, *args, **kwargs):
         parser.parse_node(TokenType.CHOICE)
 
-        arguments = parser.parse_node(NodeType.ARGUMENTS, required_arguments=1, type_name='CHOICE')
+        arguments = parser.parse_node(NodeType.ARGUMENTS, type_name='CHOICE')
 
         bracket = parser.parse_node(TokenType.CLIP_LEFT_BRACKET)
 
@@ -35,7 +36,29 @@ class ChoiceDeclaration(Node):
         return ChoiceDeclaration(attributes, arguments.arguments)
 
     def required_arguments(self):
-        return 1
+        return len(self.arguments) if self.arguments else 0
+
+    def get_correct_attribute(self):
+        for attribute in self.attributes:
+            if attribute.check_if_true():
+                return attribute
+
+    def read_value(self, reader, arguments=None, *args, **kwargs):
+        if len(arguments) > len(self.arguments):
+            raise ArgumentsNumberException("CHOICE", self.required_arguments(), len(arguments))
+
+        arguments = arguments
+
+        result = ''
+        i = 0
+        for argument in arguments:
+            self.arguments[i].value = argument
+            i += 1
+
+        attribute = self.get_correct_attribute()
+        result += attribute.read_value(reader, *args, **kwargs).replace('\n', '\n    ')
+
+        return result
 
     def __str__(self):
         return 'CHOICE[{}]\n\t{}'.format(self.arguments[0],

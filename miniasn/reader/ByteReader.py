@@ -1,3 +1,5 @@
+from miniasn.exceptions.ReaderException import EndOfBytesException
+
 BITS_IN_BYTE = 8
 
 
@@ -16,11 +18,14 @@ class ByteReader:
     def read_byte(self):
         byte = self.__file.read(1)
 
+        if byte is b'':
+            raise EndOfBytesException()
+
         return byte
 
     def read_bit(self):
         if not self.__last_byte or self.__bits_counter == BITS_IN_BYTE:
-            byte = self.__file.read(1)
+            byte = self.read_byte()
             if not byte:
                 return None
             self.__last_byte = self.__get_bits_from_byte(byte)

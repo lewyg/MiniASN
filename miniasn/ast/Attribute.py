@@ -11,6 +11,9 @@ class Attribute(Node):
         self.type = type
         self.value = None
 
+    def get_value(self):
+        return self.value
+
     @staticmethod
     def parse(parser, *args, **kwargs):
         identifier = parser.parse_node(NodeType.IDENTIFIER)
@@ -19,9 +22,9 @@ class Attribute(Node):
 
         return Attribute(identifier, type)
 
-    @staticmethod
-    def __name_in_use(declared_types, name):
-        return any(declared_type.identifier.value == name for declared_type in declared_types)
+    def read_value(self, reader, *args, **kwargs):
+        self.value = self.type.read_value(reader, *args, **kwargs)
+        return "{} = {}".format(self.identifier, self.value)
 
     def __str__(self):
         return '{} {}'.format(self.identifier, self.type)

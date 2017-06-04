@@ -20,5 +20,11 @@ class DataStructure(Node):
 
         return DataStructure(declarations)
 
+    def read_value(self, reader, name, arguments, *args, **kwargs):
+        for declaration in self.declarations:
+            if declaration.identifier.value == name:
+                return "{}{} = {}".format(name, arguments or '',
+                                          declaration.read_value(reader, arguments=arguments, *args, **kwargs))
+
     def __str__(self):
         return '\n\n'.join([str(declaration) for declaration in self.declarations])

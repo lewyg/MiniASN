@@ -1,3 +1,4 @@
+from miniasn.encoder import Encoder
 from miniasn.node.Node import Node
 from miniasn.node.NodeType import NodeType
 from miniasn.token.TokenType import TokenType
@@ -23,6 +24,14 @@ class SimpleTypeParametrized(Node):
             parameter = parser.parse_node(NodeType.NUMBER)
 
         return SimpleTypeParametrized(type, parameter)
+
+    def read_value(self, reader, *args, **kwargs):
+        parameter = self.parameter.value if self.parameter else 8
+
+        if self.type.token_type == TokenType.BITSTRING:
+            return Encoder.encode_bitstring(reader, parameter)
+        else:
+            return Encoder.encode_uint(reader, parameter)
 
     def __str__(self):
         return '{}'.format(self.type) + ('_{}'.format(self.parameter) if self.parameter else '')

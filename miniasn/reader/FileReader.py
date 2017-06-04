@@ -40,4 +40,3 @@ class FileReader:
         self.__file.seek(position)
 
         return char
-

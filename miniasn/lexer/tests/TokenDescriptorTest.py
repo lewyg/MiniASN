@@ -1,5 +1,5 @@
-from unittest import TestCase
 from mock import patch
+from unittest import TestCase
 
 from miniasn.lexer.TokenDescriptor import TokenDescriptor
 from miniasn.token.TokenType import TokenType
