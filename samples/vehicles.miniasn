@@ -20,7 +20,7 @@ Vehicle                 ::= SEQUENCE [type]
     vehicleType         VehicleType [type]
     horsePower          UINT
     weight              UINT_15
-	hasAirbags			BOOL
+    hasAirbags          BOOL
     maxSpeed            UINT
     vimNumber           VimNumber
 }
