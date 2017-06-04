@@ -41,7 +41,7 @@ class SequenceDeclaration(Node):
         return SequenceDeclaration(attributes, arguments.arguments if arguments else [])
 
     def read_value(self, reader, arguments, *args, **kwargs):
-        if len(arguments) > len(self.arguments):
+        if len(arguments) != len(self.arguments):
             raise ArgumentsNumberException("SEQUENCE", self.required_arguments(), len(arguments))
 
         arguments = arguments

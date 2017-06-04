@@ -135,6 +135,20 @@ class FinalTest(TestCase):
                          """choice[5]=(UINT)255"""
                          )
 
+    def test_choice_declaration_expression_with_two_variables(self):
+        file = io.StringIO(
+            """choice ::= CHOICE[a b]{UINT(a == b)BOOL(DEFAULT)}"""
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        reader = ByteReader(io.BytesIO(bytearray.fromhex('ff00f00f')))
+
+        self.assertEqual(''.join(tree.read_value(reader, "choice", [5, 5]).split()),
+                         """choice[5,5]=(UINT)255"""
+                         )
+
     def test_sequence_declaration(self):
         file = io.StringIO(
             """seq ::= SEQUENCE{num UINT}"""
@@ -163,4 +177,100 @@ class FinalTest(TestCase):
 
         self.assertEqual(''.join(tree.read_value(reader, "seq", []).split()),
                          """seq={param=2,nums=[{num=1,},{num=2,},],}"""
+                         )
+
+    def test_sequence_declaration_with_parametrized_array_seq_param(self):
+        file = io.StringIO(
+            """arr ::= ARRAY[a]{num UINT}
+                seq ::= SEQUENCE[a]{nums arr[a]}
+            """
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        reader = ByteReader(io.BytesIO(bytearray.fromhex('0201')))
+
+        self.assertEqual(''.join(tree.read_value(reader, "seq", [2]).split()),
+                         """seq[2]={nums=[{num=2,},{num=1,},],}"""
+                         )
+
+    def test_sequence_declaration_with_choice_parametrized_seq_param(self):
+        file = io.StringIO(
+            """cho ::= CHOICE[a]{UINT(a == 1) BOOL(DEFAULT)}
+                seq ::= SEQUENCE[a]{choice cho[a]}
+            """
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        reader = ByteReader(io.BytesIO(bytearray.fromhex('02')))
+
+        self.assertEqual(''.join(tree.read_value(reader, "seq", [1]).split()),
+                         """seq[1]={choice=(UINT)2,}"""
+                         )
+
+    def test_sequence_declaration_with_choice_parametrized_seq_param_bool(self):
+        file = io.StringIO(
+            """cho ::= CHOICE[a]{UINT(a == TRUE) BOOL(DEFAULT)}
+                seq ::= SEQUENCE[a]{choice cho[a]}
+            """
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        reader = ByteReader(io.BytesIO(bytearray.fromhex('02')))
+
+        self.assertEqual(''.join(tree.read_value(reader, "seq", [True]).split()),
+                         """seq[True]={choice=(UINT)2,}"""
+                         )
+
+    def test_sequence_declaration_with_choice_default(self):
+        file = io.StringIO(
+            """cho ::= CHOICE[a]{UINT(a == 5) BOOL(DEFAULT)}
+                seq ::= SEQUENCE[a]{choice cho[a]}
+            """
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        reader = ByteReader(io.BytesIO(bytearray.fromhex('ff')))
+
+        self.assertEqual(''.join(tree.read_value(reader, "seq", [2]).split()),
+                         """seq[2]={choice=(BOOL)True,}"""
+                         )
+
+    def test_sequence_declaration_with_choice_default_multitypes(self):
+        file = io.StringIO(
+            """cho ::= CHOICE[a]{UINT(a == TRUE) BITSTRING(a > 5) BOOL(DEFAULT)}
+                seq ::= SEQUENCE[a]{choice cho[a]}
+            """
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        reader = ByteReader(io.BytesIO(bytearray.fromhex('ff')))
+
+        self.assertEqual(''.join(tree.read_value(reader, "seq", [2]).split()),
+                         """seq[2]={choice=(BOOL)True,}"""
+                         )
+
+    def test_sequence_declaration_with_choice_default_multitypes_bool_param(self):
+        file = io.StringIO(
+            """cho ::= CHOICE[a]{UINT(a == TRUE) BITSTRING(a > 5) BOOL(DEFAULT)}
+                seq ::= SEQUENCE[a]{choice cho[a]}
+            """
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        reader = ByteReader(io.BytesIO(bytearray.fromhex('ff')))
+
+        self.assertEqual(''.join(tree.read_value(reader, "seq", [True]).split()),
+                         """seq[True]={choice=(UINT)255,}"""
                          )

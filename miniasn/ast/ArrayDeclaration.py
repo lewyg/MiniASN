@@ -44,7 +44,7 @@ class ArrayDeclaration(Node):
         return 1
 
     def read_value(self, reader, arguments, *args, **kwargs):
-        if len(arguments) > 1:
+        if len(arguments) != 1:
             raise ArgumentsNumberException("ARRAY", self.required_arguments(), len(arguments))
 
         argument = arguments[0]

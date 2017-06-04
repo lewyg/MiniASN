@@ -39,10 +39,9 @@ class DeclaredType(Node):
         return DeclaredType(type_name, parameters, declaration)
 
     def read_value(self, reader, *args, **kwargs):
-        return self.declaration.read_value(reader,
-                                           arguments=[par.get_value() for par in
-                                                      self.parameters.parameters] if self.parameters else None,
-                                           *args, **kwargs)
+        arguments = [par.get_value() for par in self.parameters.parameters] if self.parameters else None
+
+        return self.declaration.read_value(reader, arguments=arguments, *args, **kwargs)
 
     def __str__(self):
         return '{}{}'.format(self.type_name, self.parameters or '')

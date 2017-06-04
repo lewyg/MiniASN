@@ -2,7 +2,7 @@ import io
 import unittest
 
 from miniasn.exceptions.ParserExceptions import UnexpectedTokenException, ArgumentsLoadException, NameInUseException, \
-    NotDeclaredTypeException, ParserException
+    NotDeclaredTypeException, ParserException, ParametersLoadException
 from miniasn.lexer.Lexer import Lexer
 from miniasn.parser.Parser import Parser
 from miniasn.reader.FileReader import FileReader
@@ -157,6 +157,21 @@ class ParserTest(unittest.TestCase):
 
         self.assertRaises(UnexpectedTokenException, parser.parse)
 
+    def test_choice_declaration_many_argument(self):
+        file = io.StringIO(
+            """choi::=CHOICE[a b]
+            {
+                UINT(DEFAULT)
+            }"""
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        self.assertEqual(''.join(str(tree).split()),
+                         """choi::=CHOICE[ab]UINT(DEFAULT)"""
+                         )
+
     def test_choice_declaration_no_default(self):
         file = io.StringIO(
             """choi ::= CHOICE[a]
@@ -173,7 +188,7 @@ class ParserTest(unittest.TestCase):
         file = io.StringIO(
             """choi ::= CHOICE[a]
             {
-                a type
+                type
             }"""
         )
         lexer = Lexer(FileReader(file))
@@ -246,6 +261,57 @@ class ParserTest(unittest.TestCase):
         parser = Parser(lexer)
 
         self.assertRaises(NotDeclaredTypeException, parser.parse)
+
+    def test_sequence_declaration_with_choice_in(self):
+        file = io.StringIO(
+            """choi ::= CHOICE[a]
+            {
+                UINT(DEFAULT)
+            }
+            seq::= SEQUENCE[a] {
+                b choi[a]
+            }"""
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        self.assertEqual(''.join(str(tree).split()),
+                         """choi::=CHOICE[a]UINT(DEFAULT)seq::=SEQUENCE[a]bchoi[a]"""
+                         )
+
+    def test_sequence_declaration_with_choice_many_args_in(self):
+        file = io.StringIO(
+            """choi ::= CHOICE[a b]
+            {
+                UINT(DEFAULT)
+            }
+            seq::= SEQUENCE[a] {
+                b choi[a 2]
+            }"""
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+        tree = parser.parse()
+
+        self.assertEqual(''.join(str(tree).split()),
+                         """choi::=CHOICE[ab]UINT(DEFAULT)seq::=SEQUENCE[a]bchoi[a2]"""
+                         )
+
+    def test_sequence_declaration_with_choice_many_args_in_missing_args(self):
+        file = io.StringIO(
+            """choi ::= CHOICE[a b]
+            {
+                UINT(DEFAULT)
+            }
+            seq::= SEQUENCE[a] {
+                b choi[a]
+            }"""
+        )
+        lexer = Lexer(FileReader(file))
+        parser = Parser(lexer)
+
+        self.assertRaises(ParametersLoadException, parser.parse)
 
     def test_example_file(self):
         file = io.StringIO(
