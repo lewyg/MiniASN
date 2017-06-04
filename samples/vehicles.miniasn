@@ -1,0 +1,53 @@
+Car                     ::= BITSTRING_0
+Bus                     ::= BITSTRING_0
+Truck                   ::= BITSTRING_0
+Motorbike               ::= BITSTRING_0
+None                    ::= BITSTRING_0
+
+VehicleType             ::= CHOICE [type]
+{
+    Car                 (type == 0)
+    Bus                 (type == 1)
+    Truck               (type == 2)
+    Motorbike           (type == 3)
+    None                (DEFAULT)
+}
+
+VimNumber               ::= BITSTRING_18
+
+Vehicle                 ::= SEQUENCE [type]
+{
+    vehicleType         VehicleType [type]
+    horsePower          UINT
+    weight              UINT_15
+	hasAirbags			BOOL
+    maxSpeed            UINT
+    vimNumber           VimNumber
+}
+
+Vehicles                ::= ARRAY [n]
+{
+    type                UINT_2
+    vehicle             Vehicle[type]
+}
+
+VehiclesInGarage        ::= CHOICE [nVehicles nSpaces]
+{
+    Vehicles [nVehicles](nVehicles <= nSpaces)
+    Vehicles [nSpaces]  (DEFAULT)
+}
+
+EnoughSpaces            ::= BITSTRING_0
+NotEnoughSpaces         ::= BITSTRING_0
+
+IsEnoughSpaces          ::= CHOICE [nVehicles nSpaces]
+{
+    EnoughSpaces        (nVehicles <= nSpaces)
+    NotEnoughSpaces     (DEFAULT)
+}
+
+Garage                  ::= SEQUENCE [nVehicles nSpaces]
+{
+    isEnoughSpaces      IsEnoughSpaces [nVehicles nSpaces]
+    vehicles            VehiclesInGarage [nVehicles nSpaces]
+}

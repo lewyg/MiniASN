@@ -44,7 +44,7 @@ class ChoiceDeclaration(Node):
                 return attribute
 
     def read_value(self, reader, arguments=None, *args, **kwargs):
-        if len(arguments) > len(self.arguments):
+        if len(arguments) != len(self.arguments):
             raise ArgumentsNumberException("CHOICE", self.required_arguments(), len(arguments))
 
         arguments = arguments
@@ -61,5 +61,6 @@ class ChoiceDeclaration(Node):
         return result
 
     def __str__(self):
-        return 'CHOICE[{}]\n\t{}'.format(self.arguments[0],
-                                         '\n\t'.join([str(attribute) for attribute in self.attributes]))
+        arguments = '{}'.format(' '.join([str(argument) for argument in self.arguments]))
+
+        return 'CHOICE[{}]\n\t{}'.format(arguments, '\n\t'.join([str(attribute) for attribute in self.attributes]))

@@ -17,7 +17,8 @@ class SimpleExpression(Node):
     def get_value(self):
         left_value = str(self.left_operand.get_value()).upper()
         operator_type = self.operator.operator.token_type
-        right_value = str(self.right_operand).upper()
+        right_value = str(self.right_operand.get_value()).upper()
+
         if operator_type == TokenType.EQUAL:
             self.value = left_value == right_value
         elif operator_type == TokenType.NOT_EQUAL:
@@ -46,7 +47,16 @@ class SimpleExpression(Node):
                                        left_operand.value)
 
         operator = parser.parse_node(NodeType.RELATIONAL_OPERATOR)
-        right_operand = parser.parse_node(NodeType.VALUE)
+
+        right_operand = parser.parse_or_node_list([NodeType.IDENTIFIER,
+                                                   NodeType.VALUE])
+        if right_operand.first == TokenType.IDENTIFIER:
+            right_operand_definition = parser.check_if_name_exists(parser.local_names, right_operand)
+            if not right_operand_definition:
+                raise UnknownNameException(right_operand.identifier.line,
+                                           right_operand.identifier.column,
+                                           right_operand.value)
+            right_operand = right_operand_definition
 
         return SimpleExpression(left_operand_definition, operator, right_operand)
 

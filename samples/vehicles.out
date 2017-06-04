@@ -1,0 +1,38 @@
+Garage['7', '3'] = {
+  isEnoughSpaces = (NotEnoughSpaces) ,
+  vehicles = (Vehicles[3]) [
+         {
+          type = 1,
+          vehicle = {
+              vehicleType = (Bus) ,
+              horsePower = 49,
+              weight = 24292,
+              hasAirbags = True,
+              maxSpeed = 149,
+              vimNumber = 101101001000000110,
+            },
+         },
+         {
+          type = 2,
+          vehicle = {
+              vehicleType = (Truck) ,
+              horsePower = 92,
+              weight = 3694,
+              hasAirbags = True,
+              maxSpeed = 91,
+              vimNumber = 010010000001100100,
+            },
+         },
+         {
+          type = 1,
+          vehicle = {
+              vehicleType = (Bus) ,
+              horsePower = 189,
+              weight = 22750,
+              hasAirbags = True,
+              maxSpeed = 200,
+              vimNumber = 100000011100110110,
+            },
+         },
+        ],
+}

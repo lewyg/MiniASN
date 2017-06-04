@@ -29,9 +29,6 @@ class Parameter(Node):
                                        parameter.value)
         return Parameter(parameter, parameter_definition.get_value)
 
-    def read_value(self, reader, *args, **kwargs):
-        return self.value(reader, *args, **kwargs)
-
     def __str__(self):
         if self.get_value():
             return str(self.get_value())

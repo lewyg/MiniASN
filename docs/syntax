@@ -21,7 +21,7 @@ parameter = ( id | number )
 
 or_expression = and_expression { 'OR' and_expression }
 and_expression= simple_expression { 'AND' simple_expression }
-simple_expression = id relational_operator value
+simple_expression = id relational_operator ( value | id )
 relational_operator = ( '==' | '!=' | '<' | '>' | '<=' | '>=' )
 
 value = ( number | boolean )
