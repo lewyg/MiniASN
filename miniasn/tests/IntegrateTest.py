@@ -21,6 +21,12 @@ class IntegrateTest(TestCase):
 
         self.assertEqual(''.join(tree.read_value(reader, name, params).split()), ''.join(result.split()))
 
+    def test_structure_not_found(self):
+        data_structure = """uint ::= UINT"""
+        result = """Structure aaa not found!"""
+
+        self.assertMiniASNTest(data_structure, '1f', result, 'aaa')
+
     def test_simple_type_declaration_bool(self):
         data_structure = """bool ::= BOOL"""
         result = """bool=False"""
