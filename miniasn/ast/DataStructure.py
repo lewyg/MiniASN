@@ -26,5 +26,7 @@ class DataStructure(Node):
                 return "{}{} = {}".format(name, arguments or '',
                                           declaration.read_value(reader, arguments=arguments, *args, **kwargs))
 
+        return 'Structure {} not found!'.format(name)
+
     def __str__(self):
         return '\n\n'.join([str(declaration) for declaration in self.declarations])

@@ -9,7 +9,7 @@ from miniasn.reader.FileReader import FileReader
 def main(args):
     try:
         if (len(args)) < 3:
-            print("Missing arguments!")
+            print("Missing arguments!(structure.miniasn data.bin name [params])")
             return
 
         file_reader = FileReader(open(args[0]))
