@@ -7,7 +7,7 @@ from miniasn.lexer.tests.TokenDescriptorTest import TokenDescriptorTest
 from miniasn.lexer.tests.LexerTest import LexerTest
 from miniasn.parser.tests.ParserTest import ParserTest
 from miniasn.encoder.tests.EncoderTest import EncoderTest
-from miniasn.tests.FinalTest import FinalTest
+from miniasn.tests.IntegrateTest import IntegrateTest
 
 if __name__ == '__main__':
     unittest.main()
